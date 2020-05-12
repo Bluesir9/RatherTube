@@ -1,0 +1,32 @@
+body {
+	display: flex;
+	flex-direction: column;
+	font-family: monospace;
+	background: #202020;
+	color: #b3b9c5;
+}
+
+#area_top_bar {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  margin-left: 10px;
+  margin-right: 10px;
+  align-items: baseline;
+}
+
+#area_top_bar_title {
+ font-size: 1.2rem;
+}
+
+#area_top_bar_search {
+  display: flex;
+  flex: 1;
+  margin-left: 10px;
+  background: #202020;
+	color: #b3b9c5;
+	border-color: #b3b9c5;
+	border-width: 1px;
+	font-size: 1.2rem;
+	padding: 8px;
+}
