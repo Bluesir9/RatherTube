@@ -1,6 +1,7 @@
 body {
 	display: flex;
 	flex-direction: column;
+	margin: 0;
 	font-family: monospace;
 	background: #202020;
 	color: #b3b9c5;
@@ -10,9 +11,10 @@ body {
   display: flex;
   flex: 1;
   flex-direction: row;
-  margin-left: 10px;
-  margin-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   align-items: baseline;
+  box-shadow: 0 0 5px #202020, 0 2px 5px #101010;
 }
 
 #area_top_bar_title {
