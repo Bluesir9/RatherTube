@@ -1,6 +1,8 @@
 body {
 	display: flex;
+	flex: 1;
 	flex-direction: column;
+	height: 100vh;
 	margin: 0;
 	font-family: monospace;
 	background: #202020;
@@ -9,7 +11,7 @@ body {
 
 #area_top_bar {
   display: flex;
-  flex: 1;
+  flex: 0;
   flex-direction: row;
   padding-left: 10px;
   padding-right: 10px;
@@ -19,6 +21,7 @@ body {
 
 #area_top_bar_title {
  font-size: 1.2rem;
+ color: mediumseagreen;
 }
 
 #area_top_bar_search {
@@ -31,4 +34,56 @@ body {
 	border-width: 1px;
 	font-size: 1.2rem;
 	padding: 8px;
+}
+
+#area_content {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	flex-grow: all;
+}
+
+#area_bottom_play_menu {
+	display: flex;
+	flex: 0;
+	flex-direction: row;
+	justify-content: center;
+	padding: 10px;
+	box-shadow: 0 0 5px #202020, 0 -2px 5px #101010;
+}
+
+#area_bottom_play_menu_previous_track_button {
+	padding: 10px;
+}
+
+#icon_bottom_play_menu_previous_track_button {
+	font-size: 50px;
+	color: mediumseagreen;
+}
+
+#area_bottom_play_menu_play_track_button {
+	padding: 10px;
+}
+
+#icon_bottom_play_menu_play_track_button {
+	font-size: 50px;
+	color: mediumseagreen;
+}
+
+#area_bottom_play_menu_pause_track_button {
+	padding: 10px;
+}
+
+#icon_bottom_play_menu_pause_track_button {
+	font-size: 50px;
+	color: mediumseagreen;
+}
+
+#area_bottom_play_menu_next_track_button {
+	padding: 10px;
+}
+
+#icon_bottom_play_menu_next_track_button {
+	font-size: 50px;
+	color: mediumseagreen;
 }

@@ -4,19 +4,32 @@
   <meta charset="UTF-8">
   <title>RatherTube</title>
   <link rel="stylesheet" href="index.css"/>
+  <script src="https://kit.fontawesome.com/40a19fb4c0.js" crossorigin="anonymous"></script>
   <script src="rathertube.js"></script>
 </head>
 <body>
   <div id="area_top_bar">
     <p id="area_top_bar_title">RatherTube</p>
     <!--suppress HtmlFormInputWithoutLabel -->
+    <!--TODO: Add left aligned search icon to below input element -->
     <input id="area_top_bar_search" type="search" placeholder="Search">
   </div>
   <div id="area_content">
 
   </div>
   <div id="area_bottom_play_menu">
-    
+    <div id="area_bottom_play_menu_previous_track_button">
+      <i class="fas fa-step-backward" id="icon_bottom_play_menu_previous_track_button"></i>
+    </div>
+    <div id="area_bottom_play_menu_play_track_button">
+      <i class="far fa-play-circle" id="icon_bottom_play_menu_play_track_button"></i>
+    </div>
+    <div id="area_bottom_play_menu_pause_track_button"hidden>
+      <i class="far fa-pause-circle" id="icon_bottom_play_menu_pause_track_button"></i>
+    </div>
+    <div id="area_bottom_play_menu_next_track_button">
+      <i class="fas fa-step-forward" id="icon_bottom_play_menu_next_track_button"></i>
+    </div>
   </div>
 </body>
 </html>
