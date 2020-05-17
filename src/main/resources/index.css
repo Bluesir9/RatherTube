@@ -124,6 +124,7 @@ body {
 }
 
 #icon_bottom_play_menu_track_queue_button {
+	display: none;
 	font-size: 25px;
 	color: mediumseagreen;
 }
