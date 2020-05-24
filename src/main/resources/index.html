@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>RatherTube</title>
   <link rel="stylesheet" href="index.css"/>
+  <link rel="stylesheet" href="circular_loading.css"/>
   <script src="https://kit.fontawesome.com/40a19fb4c0.js" crossorigin="anonymous"></script>
   <script src="rathertube.js"></script>
 </head>
@@ -15,7 +16,13 @@
     <input id="area_top_bar_search" type="search" placeholder="Search">
   </div>
   <div id="area_content">
-    <!-- TODO: Everything! -->
+    <div class="area_content_central_circular_loading" hidden>
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
   </div>
   <div id="area_bottom_play_menu">
     <div id="area_bottom_play_menu_track_information">
