@@ -1,0 +1,48 @@
+#area_content_content_grid_container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	grid-gap: 10px;
+	justify-content: center;
+}
+
+.area_content_content_grid_item {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+}
+
+.area_content_content_grid_item_image {
+	display: flex;
+	flex: 1;
+	width: auto;
+	height: auto;
+	object-fit: cover;
+	background-color: #2F2F2F;
+}
+
+.area_content_content_grid_item_track_info_container {
+	display: flex;
+	flex: 0;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-top: 10px;
+}
+
+.area_content_content_grid_item_track_title_and_artist_container {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.area_content_content_grid_item_track_title {
+	margin: 0;
+	font-size: 1.0rem;
+}
+
+.area_content_content_grid_item_artist_name {
+	margin: 0;
+	margin-top: 3px;
+	font-size: 0.7rem;
+}
