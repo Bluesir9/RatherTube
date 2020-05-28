@@ -1,0 +1,12 @@
+#area_content_central_no_search_results_container {
+	display: none;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#area_content_central_no_search_results_container_message {
+	font-size: 20px;
+	color: mediumseagreen;
+}
