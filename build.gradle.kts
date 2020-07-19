@@ -21,6 +21,8 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$kotlinCoroutinesVersion")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$kotlinCoroutinesVersion")
   //endregion
+
+  implementation(npm("uuid"))
 }
 
 kotlin.target.browser { }
