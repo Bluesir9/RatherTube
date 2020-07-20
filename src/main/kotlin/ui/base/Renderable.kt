@@ -2,6 +2,7 @@ package ui.base
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import org.w3c.dom.HTMLElement
 
 /*
@@ -45,6 +46,7 @@ abstract class Renderable(
 
   fun destroy() {
     onDestroy()
+    cancel()
     /*
     Destruction code specific to this
     class will follow from here.
