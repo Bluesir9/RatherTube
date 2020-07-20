@@ -1,6 +1,17 @@
 package ui.base
 
-abstract class BasePresenterImpl : BasePresenter {
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+
+abstract class BasePresenterImpl :
+  BasePresenter,
+  /*
+  FIXME:
+    Is Dispatchers.Main the right idea here?
+  */
+  CoroutineScope by CoroutineScope(Dispatchers.Main) {
+
   abstract fun onStart()
   abstract fun onStop()
 
@@ -16,6 +27,7 @@ abstract class BasePresenterImpl : BasePresenter {
 
   final override fun stop() {
     onStop()
+    cancel()
     /*
     Stop lifecycle code specific
     to this class will be written
