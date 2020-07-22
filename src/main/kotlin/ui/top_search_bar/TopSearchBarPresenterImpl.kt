@@ -1,18 +1,24 @@
 package ui.top_search_bar
 
+import kotlinx.coroutines.launch
+import song.SearchForSongs
 import ui.base.BasePresenterImpl
 
 class TopSearchBarPresenterImpl : TopSearchBarContract.Presenter, BasePresenterImpl() {
 
+  private val searchForSongs = SearchForSongs()
+
   override fun onStart() {
-    TODO("Not yet implemented")
+    //no-op
   }
 
   override fun onSearchQueryDecided(query: String) {
-    TODO("Not yet implemented")
+    launch {
+      if(query.isNotBlank()) searchForSongs(query)
+    }
   }
 
   override fun onStop() {
-    TODO("Not yet implemented")
+    //no-op
   }
 }
