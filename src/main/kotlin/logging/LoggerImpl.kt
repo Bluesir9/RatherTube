@@ -20,6 +20,10 @@ class LoggerImpl(private val logTag: String) : Logger {
     }
   }
 
+  override fun error(message: String) {
+    error(message, Exception(message))
+  }
+
   override fun error(message: String, throwable: Throwable) {
     console.error(logTag, message, throwable)
   }
