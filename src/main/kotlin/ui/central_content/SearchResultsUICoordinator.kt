@@ -23,11 +23,11 @@ interface SearchEventTrigger {
   fun onSearchEnd(searchQuery: String, songsFound: List<Song>)
 }
 
-interface SearchEventListener {
+interface SearchEventsListener {
   fun getSearchEvents(): Flow<SearchEvent>
 }
 
-object SearchResultsUICoordinator : SearchEventTrigger, SearchEventListener {
+object SearchResultsUICoordinator : SearchEventTrigger, SearchEventsListener {
   private val eventChannel = BroadcastChannel<SearchEvent>(1)
 
   override fun onSearchBegin(searchQuery: String) {
