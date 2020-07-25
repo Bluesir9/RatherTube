@@ -88,7 +88,7 @@ class BottomPlaybackBarViewImpl(
   }
 
   override fun onLayoutReady() {
-    presenter.start()
+    presenter.start(this)
   }
 
   override fun render(vm: BottomPlaybackBarVM) {
