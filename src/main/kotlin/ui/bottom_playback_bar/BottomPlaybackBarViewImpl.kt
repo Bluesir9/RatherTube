@@ -1,5 +1,6 @@
 package ui.bottom_playback_bar
 
+import constants.AUDIO_PLAYER_HTML_ELEMENT_ID
 import extensions.createHtmlElementWithId
 import kotlinx.coroutines.flow.*
 import org.w3c.dom.HTMLElement
@@ -39,6 +40,16 @@ class BottomPlaybackBarViewImpl(
         id = "area_bottom_play_menu_track_queue_button_container",
         applyCSS = applyTrackQueueButtonContainerCSS
       ).also { document.appendChild(it) }
+
+    val audioPlayer =
+      document.createHtmlElementWithId(
+        localName = "audio",
+        id = AUDIO_PLAYER_HTML_ELEMENT_ID,
+        applyCSS = null
+      ).also { element ->
+        element.hidden = true
+        document.appendChild(element)
+      }
 
     trackInfoView = BottomPlaybackBarTrackInfoView(trackInfoContainer).also { it.create() }
     playbackButtonsView = BottomPlaybackButtonsView(trackPlaybackButtonsContainer).also { it.create() }
