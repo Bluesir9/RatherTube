@@ -1,30 +1,50 @@
+@file:Suppress("EXPERIMENTAL_API_USAGE")
+
 package ui.bottom_playback_bar
 
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import song.SongPlaybackCoordinator
+import song.SongPlaybackEventListener
+import song.SongPlayer
 import ui.base.BasePresenterImpl
 
-class BottomPlaybackBarPresenterImpl : BottomPlaybackBarContract.Presenter, BasePresenterImpl() {
+class BottomPlaybackBarPresenterImpl :
+  BottomPlaybackBarContract.Presenter,
+  BasePresenterImpl<BottomPlaybackBarContract.View>() {
+
+  private val songPlayer: SongPlayer = SongPlaybackCoordinator
+  private val songPlaybackEventListener: SongPlaybackEventListener = SongPlaybackCoordinator
+  private val generateVM: BottomPlaybackBarVMGenerator = BottomPlaybackBarVMGeneratorImpl()
+
+  private lateinit var lastPlaybackEvent: SongPlaybackEventListener.Event
 
   override fun onStart() {
-    TODO("Not yet implemented")
+    songPlaybackEventListener.getSongPlaybackEvents()
+      .onEach { event -> lastPlaybackEvent = event }
+      .map { generateVM(it) }
+      .onEach { view.render(it) }
+      .launchIn(this)
   }
 
   override fun goToPreviousTrackButtonClick() {
-    TODO("Not yet implemented")
+    songPlayer.rewindRequested()
   }
 
   override fun goToNextTrackButtonClick() {
-    TODO("Not yet implemented")
+    songPlayer.forwardRequested()
   }
 
   override fun playCurrentTrackButtonClick() {
-    TODO("Not yet implemented")
+    songPlayer.playRequested(lastPlaybackEvent.song)
   }
 
   override fun pauseCurrentTrackButtonClick() {
-    TODO("Not yet implemented")
+    songPlayer.pauseRequested()
   }
 
   override fun onStop() {
-    TODO("Not yet implemented")
+    //no-op
   }
 }
