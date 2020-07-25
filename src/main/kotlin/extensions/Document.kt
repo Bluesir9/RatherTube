@@ -8,11 +8,11 @@ import org.w3c.dom.css.CSSStyleDeclaration
 fun Document.createHtmlElementWithId(
   localName: String,
   id: String,
-  applyCSS: (style: CSSStyleDeclaration) -> Unit
+  applyCSS: ((style: CSSStyleDeclaration) -> Unit)? = null
 ): HTMLElement {
   val htmlElement = createElement(localName) as HTMLElement
   htmlElement.id = id
-  applyCSS(htmlElement.style)
+  if(applyCSS != null) applyCSS(htmlElement.style)
   return htmlElement
 }
 
