@@ -8,7 +8,7 @@ interface BottomPlaybackBarContract {
     fun render(vm: BottomPlaybackBarVM)
   }
 
-  interface Presenter : BasePresenter {
+  interface Presenter : BasePresenter<View> {
     fun goToPreviousTrackButtonClick()
     fun goToNextTrackButtonClick()
     fun playCurrentTrackButtonClick()

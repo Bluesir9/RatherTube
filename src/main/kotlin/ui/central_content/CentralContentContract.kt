@@ -9,7 +9,7 @@ interface CentralContentContract {
     fun render(vm: CentralContentVM)
   }
 
-  interface Presenter : BasePresenter {
+  interface Presenter : BasePresenter<View> {
     fun onSearchResultClick(id: UUID)
   }
 }

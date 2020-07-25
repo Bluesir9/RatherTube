@@ -8,7 +8,7 @@ interface TopSearchBarContract {
     fun render(vm : TopSearchBarVM)
   }
 
-  interface Presenter : BasePresenter {
+  interface Presenter : BasePresenter<View> {
     fun onSearchQueryDecided(query: String)
   }
 }
