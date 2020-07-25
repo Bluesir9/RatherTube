@@ -4,7 +4,7 @@ import kotlinx.coroutines.launch
 import song.SearchForSongs
 import ui.base.BasePresenterImpl
 
-class TopSearchBarPresenterImpl : TopSearchBarContract.Presenter, BasePresenterImpl() {
+class TopSearchBarPresenterImpl : TopSearchBarContract.Presenter, BasePresenterImpl<TopSearchBarContract.View>() {
 
   private val searchForSongs = SearchForSongs()
 
