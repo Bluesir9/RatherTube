@@ -40,7 +40,7 @@ class Body : Renderable(document.body!!) {
           style.flex = "1"
           style.overflowY = "scroll"
           style.overflowX = "hidden"
-          style.setPropertyValue("scrollbar-color", "mediumseagreen #202020")
+          style.setProperty("scrollbar-color", "mediumseagreen #202020")
         }
       )
     val bottomContainer =
