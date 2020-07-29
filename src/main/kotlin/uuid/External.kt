@@ -2,7 +2,7 @@ package uuid
 
 @JsModule("uuid")
 @JsNonModule
-@JsName("uuidv4")
-external fun uuidv4(): String
+@JsName("v4")
+external val uuidv4: String
 
-fun randomUUID(): UUID = UUID(uuidv4())
+fun randomUUID(): UUID = UUID(uuidv4)
