@@ -18,7 +18,7 @@ class BottomPlaybackBarPresenterImpl :
   private val songPlaybackEventListener: SongPlaybackEventListener = SongPlaybackCoordinator
   private val generateVM: BottomPlaybackBarVMGenerator = BottomPlaybackBarVMGeneratorImpl()
 
-  private lateinit var lastPlaybackEvent: SongPlaybackEventListener.Event
+  private var lastPlaybackEvent: SongPlaybackEventListener.Event? = null
 
   override fun onStart() {
     songPlaybackEventListener.getSongPlaybackEvents()
@@ -37,7 +37,7 @@ class BottomPlaybackBarPresenterImpl :
   }
 
   override fun playCurrentTrackButtonClick() {
-    songPlayer.playRequested(lastPlaybackEvent.song)
+    lastPlaybackEvent?.song?.let { songPlayer.playRequested(it) }
   }
 
   override fun pauseCurrentTrackButtonClick() {
