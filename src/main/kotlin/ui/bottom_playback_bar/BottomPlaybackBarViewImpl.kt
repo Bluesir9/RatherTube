@@ -24,21 +24,21 @@ class BottomPlaybackBarViewImpl(
         localName = "div",
         id = "area_bottom_play_menu_track_information",
         applyCSS = applyTrackInfoContainerCSS
-      ).also { document.appendChild(it) }
+      ).also { rootElement.appendChild(it) }
 
     val trackPlaybackButtonsContainer =
       document.createHtmlElementWithId(
         localName = "div",
         id = "area_bottom_play_menu_playback_buttons",
         applyCSS = applyTrackPlaybackButtonsContainerCSS
-      ).also { document.appendChild(it) }
+      ).also { rootElement.appendChild(it) }
 
     val trackQueueButtonContainer =
       document.createHtmlElementWithId(
         localName = "div",
         id = "area_bottom_play_menu_track_queue_button_container",
         applyCSS = applyTrackQueueButtonContainerCSS
-      ).also { document.appendChild(it) }
+      ).also { rootElement.appendChild(it) }
 
 
     trackInfoView = BottomPlaybackBarTrackInfoView(trackInfoContainer).also { it.create() }
