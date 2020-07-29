@@ -5,7 +5,9 @@ package song
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import org.w3c.dom.Audio
 import song.SongPlaybackEventListener.Event
+import song.SongPlaybackEventListener.Event.*
 
 interface SongPlayer {
   fun playRequested(song: Song)
@@ -25,22 +27,65 @@ interface SongPlaybackEventListener {
 
 object SongPlaybackCoordinator : SongPlayer, SongPlaybackEventListener {
 
+  private data class AudioFile(val song: Song, val audio: Audio)
+
   private val eventChannel = BroadcastChannel<Event>(1)
+  private var latestAudioFile : AudioFile? = null
 
   override fun playRequested(song: Song) {
-    TODO("Not yet implemented")
+    val latestAudioFileCopy = latestAudioFile
+    if(latestAudioFileCopy != null && latestAudioFileCopy.song == song) {
+      latestAudioFileCopy.audio.play()
+    } else {
+      val newAudio = Audio(song.playbackUrl)
+      val newAudioFile = AudioFile(song, newAudio)
+      onNewAudioFileObtained(newAudioFile)
+      newAudioFile.audio.play()
+    }
+  }
+
+  private fun onNewAudioFileObtained(audioFile: AudioFile) {
+    audioFile.audio.onplay = {
+      broadcastEvent(Playing(audioFile.song))
+    }
+    audioFile.audio.onplaying = {
+      broadcastEvent(Playing(audioFile.song))
+    }
+    audioFile.audio.onpause = {
+      broadcastEvent(Paused(audioFile.song))
+    }
+    audioFile.audio.onprogress = {
+      /*
+      FIXME:
+       Ensure that this is the best API
+       to track this event.
+       */
+      broadcastEvent(Loading(audioFile.song))
+    }
+    this.latestAudioFile = audioFile
+  }
+
+  private fun broadcastEvent(event: Event) {
+    eventChannel.offer(event)
   }
 
   override fun pauseRequested() {
-    TODO("Not yet implemented")
+    latestAudioFile?.audio?.pause()
   }
 
   override fun rewindRequested() {
-    TODO("Not yet implemented")
+    latestAudioFile?.audio?.also {
+      it.pause()
+      it.fastSeek(0.0)
+    }
   }
 
   override fun forwardRequested() {
-    TODO("Not yet implemented")
+    /*
+    TODO:
+      Playback queue feature needs to be
+      implemented.
+     */
   }
 
   override fun getSongPlaybackEvents(): Flow<Event> =
