@@ -22,7 +22,9 @@ class TopSearchBarViewImpl(
           style.fontSize = "1.2rem"
           style.color = "mediumseagreen"
         }
-      )
+      ).also {
+        it.innerText = "RatherTube"
+      }
     val topBarSearchInput =
       document.createHtmlInputElement(
         type = "search",
