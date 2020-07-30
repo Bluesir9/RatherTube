@@ -30,19 +30,18 @@ class CentralContentViewImpl(
         localName = "div",
         clazz = "area_content_central_loader",
         applyCSS = { style ->
+          style.display = "none"
           style.margin = "auto auto"
           style.width = "200px"
           style.height = "80px"
           style.textAlign = "center"
           style.fontSize = "10px"
         }
-      ).also {
-        it.hidden = true
-      }
+      )
 
     noSearchResultsContainer =
       document.createHtmlElementWithId(
-        localName = "area_content_central_no_search_results_container",
+        localName = "div",
         id = "area_content_central_no_search_results_container",
         applyCSS = { style ->
           style.display = "none"
@@ -51,9 +50,7 @@ class CentralContentViewImpl(
           style.justifyContent = "center"
           style.alignItems = "center"
         }
-      ).also {
-        it.hidden = true
-      }
+      )
 
     searchResultsContainer =
       document.createHtmlElementWithId(
@@ -97,9 +94,21 @@ class CentralContentViewImpl(
     progressLoaderVisible: Boolean = false,
     noSearchResultsVisible: Boolean = false,
     searchResultsVisible: Boolean = false) {
-    progressLoaderContainer.hidden = !progressLoaderVisible
-    noSearchResultsContainer.hidden = !noSearchResultsVisible
-    searchResultsContainer.hidden = !searchResultsVisible
+    if(progressLoaderVisible) {
+      progressLoaderContainer.style.display = ""
+    } else {
+      progressLoaderContainer.style.display = "none"
+    }
+    if(noSearchResultsVisible) {
+      noSearchResultsContainer.style.display = "flex"
+    } else {
+      noSearchResultsContainer.style.display = "none"
+    }
+    if(searchResultsVisible) {
+      searchResultsContainer.style.display = "grid"
+    } else {
+      searchResultsContainer.style.display = "none"
+    }
   }
 
   override fun onDestroy() {
