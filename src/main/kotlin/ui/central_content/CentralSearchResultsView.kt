@@ -1,15 +1,10 @@
 package ui.central_content
 
 import extensions.createHtmlElementWithClass
-import extensions.querySelectorAsHtmlElement
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
-import org.w3c.dom.HTMLElement
-import org.w3c.dom.HTMLImageElement
-import org.w3c.dom.HTMLParagraphElement
-import org.w3c.dom.asList
-import org.w3c.dom.css.CSSStyleSheet
+import org.w3c.dom.*
 import ui.base.Renderable
 import ui.central_content.CentralContentVM.SearchResults
 import ui.central_content.CentralContentVM.SearchResults.Item
@@ -25,14 +20,9 @@ class CentralSearchResultsView(
   private val gridItemClickEvents = BroadcastChannel<UUID>(1)
 
   override fun initLayout() {
-    /*
-    FIXME:
-      Not sure if this works as intended, but to insert
-      the CSS for every grid item present in the content
-      grid is definitely quite wrong.
-     */
-    val css = document.styleSheets.asList().first() as CSSStyleSheet
-    css.insertRule(getGridItemCSS(),css.cssRules.length)
+    val styleElement = document.createElement("style") as HTMLStyleElement
+    styleElement.innerText = getGridItemCSS()
+    document.head!!.appendChild(styleElement)
   }
 
   override fun onLayoutReady() {
@@ -41,14 +31,12 @@ class CentralSearchResultsView(
 
   fun render(vm: SearchResults) {
     rootElement.clear() //FIXME: How expensive is this?
-    vm.items
-      .map { this.getGridItem(it) }
-      .forEach { rootElement.appendChild(it) }
+    vm.items.forEach { renderItem(it) }
   }
 
   fun getGridItemClickEvents(): Flow<UUID> = gridItemClickEvents.asFlow()
 
-  private fun getGridItem(vm: Item): HTMLElement {
+  private fun renderItem(vm: Item) {
     val container = document.createHtmlElementWithClass(
       localName = "div",
       clazz = "area_content_content_grid_item",
@@ -57,33 +45,25 @@ class CentralSearchResultsView(
 
     container.innerHTML = """
         <div class="area_content_content_grid_item_image_container">
-          <img class="area_content_content_grid_item_image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTgJiwgqiIcU_lvccboQXHnspbNAYCJmbXpFozoKZsrWF7X5YN9&usqp=CAU"/>
+          <img class="area_content_content_grid_item_image" src="${vm.trackImageUrl}"/>
           <div class="area_content_content_grid_item_hover_play_container">
             <i class="far fa-play-circle icon_area_content_content_grid_item_hover_play"></i>
           </div>
         </div>
         <div class="area_content_content_grid_item_track_info_container">
           <div class="area_content_content_grid_item_track_title_and_artist_container">
-            <p class="area_content_content_grid_item_track_title">Static</p>
-            <p class="area_content_content_grid_item_artist_name">Godspeed You! Black Emperor</p>
+            <p class="area_content_content_grid_item_track_title">${vm.trackTitle}</p>
+            <p class="area_content_content_grid_item_artist_name">${vm.trackArtist}</p>
           </div>
           <i class="fas fa-ellipsis-v"></i>
         </div>
     """.trimIndent()
 
-    val image = container.querySelectorAsHtmlElement("area_content_content_grid_item_image") as HTMLImageElement
-    val trackTitle = container.querySelectorAsHtmlElement("area_content_content_grid_item_track_title") as HTMLParagraphElement
-    val trackArtist = container.querySelectorAsHtmlElement("area_content_content_grid_item_track_title") as HTMLParagraphElement
-
-    image.src = vm.trackImageUrl
-    trackTitle.innerHTML = vm.trackTitle
-    trackArtist.innerHTML = vm.trackArtist
-
     container.onclick = {
       gridItemClickEvents.offer(vm.id)
     }
 
-    return container
+    rootElement.appendChild(container)
   }
 
   override fun onDestroy() {
