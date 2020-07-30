@@ -54,7 +54,7 @@ class BottomPlaybackButtonsView(
       iconClass = "far fa-pause-circle",
       iconId = "icon_bottom_play_menu_pause_track_button",
       iconCSS = { style ->
-        style.fontSize = "20px"
+        style.fontSize = "40px"
         style.color = "mediumseagreen"
       },
       containerId = "area_bottom_play_menu_pause_track_button",
