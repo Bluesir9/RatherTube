@@ -26,44 +26,39 @@ class CentralProgressLoaderView(
         )
       }.forEach { element -> rootElement.appendChild(element) }
 
-    document.querySelectorAllAsHtmlElements(".area_content_central_loader > div")
-      .map { it.style }
-      .forEach { style ->
-        style.backgroundColor = "mediumseagreen"
-        style.height = "100%"
-        style.width = "6px"
-        style.display = "inline-block"
-
-        style.setProperty("-webkit-animation", "sk-stretchdelay 1.2s infinite ease-in-out")
-        style.animation = "sk-stretchdelay 1.2s infinite ease-in-out"
-      }
-
-    document.querySelectorAsHtmlElement(".area_content_central_loader .rect2").style
-      .apply {
-        setProperty("-webkit-animation-delay", "-1.1s")
-        animationDelay = "-1.1s"
-      }
-
-    document.querySelectorAsHtmlElement(".area_content_central_loader .rect3").style
-      .apply {
-        setProperty("-webkit-animation-delay", "-1.0s")
-        animationDelay = "-1.0s"
-      }
-
-    document.querySelectorAsHtmlElement(".area_content_central_loader .rect2").style
-      .apply {
-        setProperty("-webkit-animation-delay", "-0.9s")
-        animationDelay = "-0.9s"
-      }
-
-    document.querySelectorAsHtmlElement(".area_content_central_loader .rect2").style
-      .apply {
-        setProperty("-webkit-animation-delay", "-0.8s")
-        animationDelay = "-0.8s"
-      }
-
     val styleElement = document.createElement("style") as HTMLStyleElement
     styleElement.innerText = """
+      .area_content_central_loader > div {
+        background-color: mediumseagreen;
+        height: 100%;
+        width: 8px;
+        display: inline-block;
+        margin: 1px;
+
+        -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+        animation: sk-stretchdelay 1.2s infinite ease-in-out
+      }
+
+      .area_content_central_loader .rect2 {
+        -webkit-animation-delay: -1.1s;
+        animation-delay: -1.1s;
+      }
+
+      .area_content_central_loader .rect3 {
+        -webkit-animation-delay: -1.0s;
+        animation-delay: -1.0s;
+      }
+
+      .area_content_central_loader .rect4 {
+        -webkit-animation-delay: -0.9s;
+        animation-delay: -0.9s;
+      }
+
+      .area_content_central_loader .rect5 {
+        -webkit-animation-delay: -0.8s;
+        animation-delay: -0.8s;
+      }
+
       @-webkit-keyframes sk-stretchdelay {
         0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
         20% { -webkit-transform: scaleY(1.0) }
