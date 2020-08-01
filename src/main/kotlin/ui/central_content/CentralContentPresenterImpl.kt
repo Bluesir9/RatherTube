@@ -34,7 +34,7 @@ class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresen
       .launchIn(this)
   }
 
-  override fun onSearchResultClick(id: UUID) {
+  override fun onSearchResultClick(id: String) {
     when(val searchEvent = lastSearchEvent) {
       is Loading -> logger.error("Unexpected encounter of search result click event. lastVM = $lastVM")
       is Loaded -> {

@@ -10,6 +10,6 @@ interface CentralContentContract {
   }
 
   interface Presenter : BasePresenter<View> {
-    fun onSearchResultClick(id: UUID)
+    fun onSearchResultClick(id: String)
   }
 }
