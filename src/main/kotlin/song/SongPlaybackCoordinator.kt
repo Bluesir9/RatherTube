@@ -40,6 +40,7 @@ object SongPlaybackCoordinator : SongPlayer, SongPlaybackEventListener {
       val newAudio = Audio(song.playbackUrl)
       val newAudioFile = AudioFile(song, newAudio)
       onNewAudioFileObtained(newAudioFile)
+      latestAudioFileCopy?.audio?.src = ""
       newAudioFile.audio.play()
     }
   }
