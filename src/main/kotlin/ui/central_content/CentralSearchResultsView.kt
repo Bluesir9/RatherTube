@@ -8,7 +8,6 @@ import org.w3c.dom.*
 import ui.base.Renderable
 import ui.central_content.CentralContentVM.SearchResults
 import ui.central_content.CentralContentVM.SearchResults.Item
-import uuid.UUID
 import kotlin.browser.document
 import kotlin.dom.clear
 

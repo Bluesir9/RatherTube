@@ -11,7 +11,6 @@ import song.SongPlayer
 import ui.base.BasePresenterImpl
 import ui.central_content.SearchEvent.Loaded
 import ui.central_content.SearchEvent.Loading
-import uuid.UUID
 
 @ExperimentalCoroutinesApi
 class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresenterImpl<CentralContentContract.View>() {
