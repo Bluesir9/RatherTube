@@ -8,6 +8,7 @@ import org.w3c.dom.*
 import ui.base.Renderable
 import ui.central_content.CentralContentVM.SearchResults
 import ui.central_content.CentralContentVM.SearchResults.Item
+import uuid.UUID
 import kotlin.browser.document
 import kotlin.dom.clear
 
@@ -16,7 +17,7 @@ class CentralSearchResultsView(
   override val rootElement: HTMLElement
 ) : Renderable(rootElement) {
 
-  private val gridItemClickEvents = BroadcastChannel<String>(1)
+  private val gridItemClickEvents = BroadcastChannel<UUID>(1)
 
   override fun initLayout() {
     val styleElement = document.createElement("style") as HTMLStyleElement
@@ -33,7 +34,7 @@ class CentralSearchResultsView(
     vm.items.forEach { renderItem(it) }
   }
 
-  fun getGridItemClickEvents(): Flow<String> = gridItemClickEvents.asFlow()
+  fun getGridItemClickEvents(): Flow<UUID> = gridItemClickEvents.asFlow()
 
   private fun renderItem(vm: Item) {
     val container = document.createHtmlElementWithClass(

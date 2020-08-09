@@ -11,6 +11,7 @@ import song.SongPlayer
 import ui.base.BasePresenterImpl
 import ui.central_content.SearchEvent.Loaded
 import ui.central_content.SearchEvent.Loading
+import uuid.UUID
 
 @ExperimentalCoroutinesApi
 class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresenterImpl<CentralContentContract.View>() {
@@ -33,7 +34,7 @@ class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresen
       .launchIn(this)
   }
 
-  override fun onSearchResultClick(id: String) {
+  override fun onSearchResultClick(id: UUID) {
     when(val searchEvent = lastSearchEvent) {
       is Loading -> logger.error("Unexpected encounter of search result click event. lastVM = $lastVM")
       is Loaded -> {
