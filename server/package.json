@@ -1,0 +1,17 @@
+{
+  "name": "rathertube_server",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "4.17m.1",
+    "scrape-youtube": "0.2.3",
+    "youtube-dl": "3.0.2"
+  }
+}
