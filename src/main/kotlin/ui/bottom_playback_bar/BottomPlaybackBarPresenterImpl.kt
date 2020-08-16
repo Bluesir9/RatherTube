@@ -5,23 +5,26 @@ package ui.bottom_playback_bar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import song.SongPlaybackCoordinator
-import song.SongPlaybackEventListener
-import song.SongPlayer
+import kotlinx.coroutines.launch
 import ui.base.BasePresenterImpl
+import youtube.YouTubeVideo
+import youtube.YouTubeVideoPlaybackCoordinator
+import youtube.YouTubeVideoPlaybackEventListener
+import youtube.YouTubeVideoPlaybackEventListener.Event
+import youtube.YouTubeVideoPlayer
 
 class BottomPlaybackBarPresenterImpl :
   BottomPlaybackBarContract.Presenter,
   BasePresenterImpl<BottomPlaybackBarContract.View>() {
 
-  private val songPlayer: SongPlayer = SongPlaybackCoordinator
-  private val songPlaybackEventListener: SongPlaybackEventListener = SongPlaybackCoordinator
+  private val videoPlayer: YouTubeVideoPlayer = YouTubeVideoPlaybackCoordinator
+  private val videoPlaybackEventListener: YouTubeVideoPlaybackEventListener = YouTubeVideoPlaybackCoordinator
   private val generateVM: BottomPlaybackBarVMGenerator = BottomPlaybackBarVMGeneratorImpl()
 
-  private var lastPlaybackEvent: SongPlaybackEventListener.Event? = null
+  private var lastPlaybackEvent: Event? = null
 
   override fun onStart() {
-    songPlaybackEventListener.getSongPlaybackEvents()
+    videoPlaybackEventListener.getSongPlaybackEvents()
       .onEach { event -> lastPlaybackEvent = event }
       .map { generateVM(it) }
       .onEach { view.render(it) }
@@ -29,19 +32,25 @@ class BottomPlaybackBarPresenterImpl :
   }
 
   override fun goToPreviousTrackButtonClick() {
-    songPlayer.rewindRequested()
+    videoPlayer.rewindRequested()
   }
 
   override fun goToNextTrackButtonClick() {
-    songPlayer.forwardRequested()
+    videoPlayer.forwardRequested()
   }
 
   override fun playCurrentTrackButtonClick() {
-    lastPlaybackEvent?.song?.let { songPlayer.playRequested(it) }
+    lastPlaybackEvent?.video?.let { playVideo(it) }
+  }
+
+  private fun playVideo(video: YouTubeVideo) {
+    launch {
+      videoPlayer.playRequested(video)
+    }
   }
 
   override fun pauseCurrentTrackButtonClick() {
-    songPlayer.pauseRequested()
+    videoPlayer.pauseRequested()
   }
 
   override fun onStop() {

@@ -1,8 +1,8 @@
 package ui.bottom_playback_bar
 
-import song.Song
-import song.SongPlaybackEventListener.Event
-import song.SongPlaybackEventListener.Event.*
+import youtube.YouTubeVideo
+import youtube.YouTubeVideoPlaybackEventListener.Event
+import youtube.YouTubeVideoPlaybackEventListener.Event.*
 
 interface BottomPlaybackBarVMGenerator {
   operator fun invoke(playbackEvent: Event): BottomPlaybackBarVM
@@ -12,16 +12,18 @@ class BottomPlaybackBarVMGeneratorImpl : BottomPlaybackBarVMGenerator {
 
   override fun invoke(playbackEvent: Event): BottomPlaybackBarVM =
     when (playbackEvent) {
-      //FIXME: Create dedicated representation for song loading state
+      //FIXME: Create dedicated representation for song loading and buffering state
       is Loading,
-      is Playing -> getVM(song = playbackEvent.song, playButtonVisible = false, pauseButtonVisible = true)
-      is Paused -> getVM(song = playbackEvent.song, playButtonVisible = true, pauseButtonVisible = false)
+      is Loaded,
+      is Buffering,
+      is Playing -> getVM(video = playbackEvent.video, playButtonVisible = false, pauseButtonVisible = true)
+      is Paused -> getVM(video = playbackEvent.video, playButtonVisible = true, pauseButtonVisible = false)
     }
 
-  private fun getVM(song: Song, playButtonVisible: Boolean, pauseButtonVisible: Boolean): BottomPlaybackBarVM =
+  private fun getVM(video: YouTubeVideo, playButtonVisible: Boolean, pauseButtonVisible: Boolean): BottomPlaybackBarVM =
     BottomPlaybackBarVM(
-      trackTitle = song.title,
-      trackArtist = song.artist,
+      trackTitle = video.title,
+      trackArtist = video.artist,
       playButtonVisible = playButtonVisible,
       pauseButtonVisible = pauseButtonVisible
     )
