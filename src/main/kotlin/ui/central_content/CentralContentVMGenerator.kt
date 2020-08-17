@@ -1,11 +1,11 @@
 package ui.central_content
 
 import ui.central_content.CentralContentVM.SearchResults
-import ui.central_content.SearchEvent.Loaded
-import ui.central_content.SearchEvent.Loading
+import ui.central_content.SearchEvent.*
 import youtube.YouTubeVideo
 import ui.central_content.CentralContentVM.Loading as LoadingVM
 import ui.central_content.CentralContentVM.Empty as EmptyVM
+import ui.central_content.CentralContentVM.Error as ErrorVM
 
 interface CentralContentVMGenerator {
   operator fun invoke(searchEvent: SearchEvent): CentralContentVM
@@ -19,6 +19,7 @@ class CentralContentVMGeneratorImpl : CentralContentVMGenerator {
         if (searchEvent.videos.isEmpty()) EmptyVM
         else getSearchResultsVM(searchEvent.videos)
       }
+      is LoadFailed -> ErrorVM(searchEvent.failureMessage)
     }
 
   private fun getSearchResultsVM(videos: List<YouTubeVideo>): SearchResults =

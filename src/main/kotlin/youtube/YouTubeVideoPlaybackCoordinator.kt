@@ -6,6 +6,9 @@ import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import org.w3c.dom.Audio
+import utils.RepoResult
+import utils.RepoResult.Failure
+import utils.RepoResult.Success
 import youtube.YouTubeVideoPlaybackEventListener.Event
 
 interface YouTubeVideoPlayer {
@@ -29,6 +32,11 @@ interface YouTubeVideoPlaybackEventListener {
     that it can takeover the playback task.
      */
     data class Loaded(override val video: YouTubeVideo): Event(video)
+    /*
+    We failed to load the streaming data due to some API
+    failure.
+     */
+    data class LoadFailed(override val video: YouTubeVideo, val failureMessage: String): Event(video)
     /*
     This is meant for when the platform audio player is
     trying to load further segments of the video so that
@@ -55,13 +63,19 @@ object YouTubeVideoPlaybackCoordinator : YouTubeVideoPlayer, YouTubeVideoPlaybac
       latestMediaFileCopy.platformAudio.play()
     } else {
       broadcastEvent(Event.Loading(video))
-      val audioPlaybackUrl = youTubeVideoRepository.getStreamUrl(video)
-      broadcastEvent(Event.Loaded(video))
-      val newAudio = Audio(audioPlaybackUrl)
-      val newMediaFile = MediaFile(video, newAudio)
-      onNewMediaFileObtained(newMediaFile)
-      latestMediaFileCopy?.platformAudio?.src = ""
-      newMediaFile.platformAudio.play()
+      when(val streamUrlLoadResult = youTubeVideoRepository.getStreamUrl(video)) {
+        is Success -> {
+          broadcastEvent(Event.Loaded(video))
+          val newAudio = Audio(streamUrlLoadResult.value)
+          val newMediaFile = MediaFile(video, newAudio)
+          onNewMediaFileObtained(newMediaFile)
+          latestMediaFileCopy?.platformAudio?.src = ""
+          newMediaFile.platformAudio.play()
+        }
+        is Failure -> {
+          broadcastEvent(Event.LoadFailed(video, streamUrlLoadResult.message))
+        }
+      }
     }
   }
 
