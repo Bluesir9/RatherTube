@@ -58,7 +58,7 @@ class CentralContentViewImpl(
         id = "area_content_content_grid_container",
         applyCSS = { style ->
           style.display = "grid"
-          style.setProperty("grid-template-columns", "repeat(auto-fit, minmax(300px, 1fr)")
+          style.setProperty("grid-template-columns", "repeat(auto-fill, minmax(300px, 1fr)")
           style.setProperty("grid-gap", "10px")
           style.justifyContent = "center"
         }
