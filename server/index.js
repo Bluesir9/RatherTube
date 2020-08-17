@@ -3,8 +3,12 @@
 const youtubeScraper = require("scrape-youtube").default;
 const ytdl = require("youtube-dl");
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
+app.use(cors({
+  origin: process.env.client_origin
+}));
 const PORT = 3000;
 
 //region GET search API

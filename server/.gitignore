@@ -1,2 +1,5 @@
 #NPM stuff
 /node_modules
+
+#Environment variables
+.env
