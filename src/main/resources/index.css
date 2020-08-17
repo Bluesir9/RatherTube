@@ -42,7 +42,6 @@ body {
 	flex: 1;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	scrollbar-color: mediumseagreen #202020;
 }
 
 #area_bottom_play_menu {
