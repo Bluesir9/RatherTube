@@ -1,6 +1,7 @@
 package ui.central_content
 
 import config.Color
+import config.StringResource
 import extensions.createHtmlElementWithId
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLParagraphElement
@@ -23,12 +24,7 @@ class CentralNoSearchResultsView(
           style.color = Color.PRIMARY_BLUE
         }
       ) as HTMLParagraphElement
-    /*
-    FIXME: Move below string into a "string
-      resources" file/class/object kinda
-      like Android has the strings.xml file.
-    */
-    messageElement.innerHTML = "No search results found"
+    messageElement.innerText = StringResource.NO_SEARCH_RESULTS_FOUND
 
     rootElement.appendChild(messageElement)
   }
