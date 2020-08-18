@@ -1,5 +1,6 @@
 package ui.central_content
 
+import config.Color
 import extensions.createHtmlElementWithId
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLParagraphElement
@@ -17,7 +18,7 @@ class CentralNoSearchResultsView(
         id = "area_content_central_no_search_results_container_message",
         applyCSS = { style ->
           style.fontSize = "20px"
-          style.color = "mediumseagreen"
+          style.color = Color.PRIMARY_BLUE
         }
       ) as HTMLParagraphElement
     /*

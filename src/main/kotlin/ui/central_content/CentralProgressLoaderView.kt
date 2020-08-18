@@ -1,5 +1,6 @@
 package ui.central_content
 
+import config.Color
 import extensions.createHtmlElementWithClass
 import extensions.querySelectorAllAsHtmlElements
 import extensions.querySelectorAsHtmlElement
@@ -29,7 +30,7 @@ class CentralProgressLoaderView(
     val styleElement = document.createElement("style") as HTMLStyleElement
     styleElement.innerText = """
       .area_content_central_loader > div {
-        background-color: mediumseagreen;
+        background-color: ${Color.PRIMARY_BLUE};
         height: 100%;
         width: 8px;
         display: inline-block;

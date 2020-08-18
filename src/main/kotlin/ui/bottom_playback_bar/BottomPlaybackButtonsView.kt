@@ -1,5 +1,6 @@
 package ui.bottom_playback_bar
 
+import config.Color
 import extensions.clickEventsAsFlow
 import extensions.createHtmlElementWithId
 import extensions.createIcon
@@ -41,7 +42,7 @@ class BottomPlaybackButtonsView(
       iconId = "icon_bottom_play_menu_previous_track_button",
       iconCSS = { style ->
         style.fontSize = "20px"
-        style.color = "mediumseagreen"
+        style.color = Color.PRIMARY_BLUE
       },
       containerId = "area_bottom_play_menu_previous_track_button",
       containerCSS = { style ->
@@ -55,7 +56,7 @@ class BottomPlaybackButtonsView(
       iconId = "icon_bottom_play_menu_pause_track_button",
       iconCSS = { style ->
         style.fontSize = "40px"
-        style.color = "mediumseagreen"
+        style.color = Color.PRIMARY_BLUE
       },
       containerId = "area_bottom_play_menu_pause_track_button",
       containerCSS = { style ->
@@ -69,7 +70,7 @@ class BottomPlaybackButtonsView(
       iconId = "icon_bottom_play_menu_play_track_button",
       iconCSS = { style ->
         style.fontSize = "40px"
-        style.color = "mediumseagreen"
+        style.color = Color.PRIMARY_BLUE
       },
       containerId = "area_bottom_play_menu_play_track_button",
       containerCSS = { style ->
@@ -83,7 +84,7 @@ class BottomPlaybackButtonsView(
       iconId = "icon_bottom_play_menu_next_track_button",
       iconCSS = { style ->
         style.fontSize = "20px"
-        style.color = "mediumseagreen"
+        style.color = Color.PRIMARY_BLUE
       },
       containerId = "area_bottom_play_menu_next_track_button",
       containerCSS = { style ->

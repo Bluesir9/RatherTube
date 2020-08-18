@@ -1,5 +1,6 @@
 package ui.central_content
 
+import config.Color
 import extensions.createHtmlElementWithClass
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.flow.Flow
@@ -130,7 +131,7 @@ class CentralSearchResultsView(
       top: 50%;
       margin-top: -20px;
       font-size: 40px;
-      color: mediumseagreen;
+      color: ${Color.PRIMARY_BLUE};
     }
 
     .area_content_content_grid_item_hover_play_container {

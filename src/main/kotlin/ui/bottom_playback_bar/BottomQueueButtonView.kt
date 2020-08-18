@@ -1,5 +1,6 @@
 package ui.bottom_playback_bar
 
+import config.Color
 import extensions.createIcon
 import org.w3c.dom.HTMLElement
 import ui.base.Renderable
@@ -21,7 +22,7 @@ class BottomQueueButtonView(
          */
         style.display = "none"
         style.fontSize = "25px"
-        style.color = "mediumseagreen"
+        style.color = Color.PRIMARY_BLUE
       }
     )
 

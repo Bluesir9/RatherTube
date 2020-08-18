@@ -1,5 +1,6 @@
 package ui.top_search_bar
 
+import config.Color
 import extensions.createHtmlElementWithId
 import extensions.createHtmlInputElement
 import org.w3c.dom.HTMLElement
@@ -20,7 +21,7 @@ class TopSearchBarViewImpl(
         id = "area_top_bar_title",
         applyCSS = { style ->
           style.fontSize = "1.2rem"
-          style.color = "mediumseagreen"
+          style.color = Color.PRIMARY_BLUE
         }
       ).also {
         it.innerText = "RatherTube"
