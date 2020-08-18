@@ -11,8 +11,10 @@ class CentralNoSearchResultsView(
   override val rootElement: HTMLElement
 ) : Renderable(rootElement) {
 
+  private lateinit var messageElement: HTMLParagraphElement
+
   override fun initLayout() {
-    val messageText =
+    messageElement =
       document.createHtmlElementWithId(
         localName = "p",
         id = "area_content_central_no_search_results_container_message",
@@ -26,9 +28,13 @@ class CentralNoSearchResultsView(
       resources" file/class/object kinda
       like Android has the strings.xml file.
     */
-    messageText.innerHTML = "No search results found"
+    messageElement.innerHTML = "No search results found"
 
-    rootElement.appendChild(messageText)
+    rootElement.appendChild(messageElement)
+  }
+
+  fun render(errorVM: CentralContentVM.ErrorVM) {
+    messageElement.innerText = errorVM.message
   }
 
   override fun onLayoutReady() {
