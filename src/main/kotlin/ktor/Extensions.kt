@@ -5,7 +5,28 @@ import io.ktor.client.statement.readText
 import io.ktor.utils.io.errors.IOException
 import kotlinx.serialization.DeserializationStrategy
 
-suspend fun <Success, Failure: GenericErrorResponse> HttpResponse.deserialize(
+suspend fun <Success> execute(
+  call: suspend () -> HttpResponse,
+  successJsonStrategy: DeserializationStrategy<Success>
+): ApiResult<Success, GenericErrorResponse> =
+  try {
+    call().deserialize(successJsonStrategy)
+  } catch (e: Exception) {
+    when (e) {
+      is IOException -> ApiResult.Failure(ApiException.NetworkException(e))
+      else -> ApiResult.Failure(ApiException.UnknownException(e))
+    }
+  }
+
+private suspend fun <Success> HttpResponse.deserialize(
+  successStrategy: DeserializationStrategy<Success>
+): ApiResult<Success, GenericErrorResponse> =
+  deserialize(
+    successStrategy = successStrategy,
+    failureStrategy = GenericErrorResponse.serializer()
+  )
+
+private suspend fun <Success, Failure: GenericErrorResponse> HttpResponse.deserialize(
   successStrategy: DeserializationStrategy<Success>,
   failureStrategy: DeserializationStrategy<Failure>
 ): ApiResult<Success, Failure> {
@@ -23,24 +44,3 @@ suspend fun <Success, Failure: GenericErrorResponse> HttpResponse.deserialize(
     ApiResult.Success(success)
   }
 }
-
-suspend fun <Success> HttpResponse.deserialize(
-  successStrategy: DeserializationStrategy<Success>
-): ApiResult<Success, GenericErrorResponse> =
-  deserialize(
-    successStrategy = successStrategy,
-    failureStrategy = GenericErrorResponse.serializer()
-  )
-
-suspend fun <Success> execute(
-  call: suspend () -> HttpResponse,
-  successJsonStrategy: DeserializationStrategy<Success>
-): ApiResult<Success, GenericErrorResponse> =
-  try {
-    call().deserialize(successJsonStrategy, GenericErrorResponse.serializer())
-  } catch (e: Exception) {
-    when (e) {
-      is IOException -> ApiResult.Failure(ApiException.NetworkException(e))
-      else -> ApiResult.Failure(ApiException.UnknownException(e))
-    }
-  }
