@@ -1,7 +1,6 @@
 package config
 
 object Color {
-  //FIXME: Is this naming convention OK?
   const val PRIMARY_BLUE = "deepskyblue"
   const val TEXT_GREY = "#b3b9c5"
   const val INPUT_BOX_GREY_BORDER = "#b3b9c5"
