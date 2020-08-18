@@ -1,5 +1,6 @@
 package ui.body
 
+import config.Color
 import extensions.createHtmlElementWithId
 import ui.base.Renderable
 import ui.bottom_playback_bar.BottomPlaybackBarViewImpl
@@ -27,7 +28,7 @@ class Body : Renderable(document.body!!) {
           style.paddingLeft = "10px"
           style.paddingRight = "10px"
           style.alignItems = "baseline"
-          style.boxShadow = "0 0 5px #202020, 0 2px 5px #101010"
+          style.boxShadow = "0 0 5px ${Color.BACKGROUND_SHADOW_GRADIENT_LIGHT}, 0 2px 5px ${Color.BACKGROUND_SHADOW_GRADIENT_DARK}"
         }
       )
     val centralContainer =
@@ -53,7 +54,7 @@ class Body : Renderable(document.body!!) {
           style.justifyContent = "space-between"
           style.alignItems = "center"
           style.padding = "10px"
-          style.boxShadow = "0 0 5px #202020, 0 -2px 5px #101010"
+          style.boxShadow = "0 0 5px ${Color.BACKGROUND_SHADOW_GRADIENT_LIGHT}, 0 -2px 5px ${Color.BACKGROUND_SHADOW_GRADIENT_DARK}"
         }
       )
 
@@ -72,8 +73,8 @@ class Body : Renderable(document.body!!) {
       height = "100vh"
       margin = "0"
       fontFamily = "monospace"
-      background = "#202020"
-      color = "#b3b9c5"
+      background = Color.BACKGROUND_BLACK
+      color = Color.TEXT_GREY
     }
   }
 

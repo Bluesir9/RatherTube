@@ -40,9 +40,9 @@ class TopSearchBarViewImpl(
           style.display = "flex"
           style.flex = "1"
           style.marginLeft = "10px"
-          style.background = "#202020"
-          style.color = "#b3b9c5"
-          style.borderColor = "#b3b9c5"
+          style.background = Color.BACKGROUND_BLACK
+          style.color = Color.TEXT_GREY
+          style.borderColor = Color.INPUT_BOX_GREY_BORDER
           style.borderWidth = "1px"
           style.fontSize = "1.2rem"
           style.padding = "8px"
