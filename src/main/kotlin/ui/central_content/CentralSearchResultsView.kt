@@ -85,7 +85,7 @@ class CentralSearchResultsView(
       width: auto;
       height: auto;
       object-fit: cover;
-      background-color: #2F2F2F;
+      background-color: ${Color.BACKGROUND_CONTENT_GRID_IMAGE};
     }
 
     .area_content_content_grid_item_track_info_container {
