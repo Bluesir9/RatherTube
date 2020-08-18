@@ -82,39 +82,37 @@ class CentralContentViewImpl(
 
   override fun render(vm: CentralContentVM) {
     when(vm) {
-      is LoadingVM -> setVisibilities(progressLoaderVisible = true)
-      is EmptyVM -> setVisibilities(noSearchResultsVisible = true)
-      is SearchResults -> {
-        setVisibilities(searchResultsVisible = true)
-        searchResultsView.render(vm)
-      }
-      is ErrorVM -> {
-        setVisibilities(errorVisible = true)
-        noSearchResultsView.render(vm)
-      }
+      is LoadingVM -> showProgressLoader()
+      is EmptyVM -> showNoSearchResultsView()
+      is SearchResults -> showSearchResultsView(vm)
+      is ErrorVM -> showErrorView(vm)
     }
   }
 
-  private fun setVisibilities(
-    progressLoaderVisible: Boolean = false,
-    noSearchResultsVisible: Boolean = false,
-    searchResultsVisible: Boolean = false,
-    errorVisible: Boolean = false) {
-    if(progressLoaderVisible) {
-      progressLoaderContainer.style.display = ""
-    } else {
-      progressLoaderContainer.style.display = "none"
-    }
-    if(noSearchResultsVisible || errorVisible) {
-      noSearchResultsContainer.style.display = "flex"
-    } else {
-      noSearchResultsContainer.style.display = "none"
-    }
-    if(searchResultsVisible) {
-      searchResultsContainer.style.display = "grid"
-    } else {
-      searchResultsContainer.style.display = "none"
-    }
+  private fun showProgressLoader() {
+    progressLoaderContainer.style.display = ""
+    hideViews(noSearchResultsContainer, searchResultsContainer)
+  }
+
+  private fun showNoSearchResultsView() {
+    noSearchResultsContainer.style.display = "flex"
+    hideViews(progressLoaderContainer, searchResultsContainer)
+  }
+
+  private fun showSearchResultsView(vm: SearchResults) {
+    searchResultsContainer.style.display = "grid"
+    hideViews(progressLoaderContainer, noSearchResultsContainer)
+    searchResultsView.render(vm)
+  }
+
+  private fun showErrorView(vm: ErrorVM) {
+    showNoSearchResultsView()
+    hideViews(progressLoaderContainer, searchResultsContainer)
+    noSearchResultsView.render(vm)
+  }
+
+  private fun hideViews(vararg htmlElements: HTMLElement) {
+    htmlElements.forEach { it.style.display = "none" }
   }
 
   override fun onDestroy() {
