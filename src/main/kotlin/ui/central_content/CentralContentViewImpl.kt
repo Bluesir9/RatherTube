@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.w3c.dom.HTMLElement
 import ui.base.Renderable
+import ui.central_content.CentralContentVM.*
 import kotlin.browser.document
 
 @Suppress("EXPERIMENTAL_API_USAGE")
@@ -81,11 +82,15 @@ class CentralContentViewImpl(
 
   override fun render(vm: CentralContentVM) {
     when(vm) {
-      is CentralContentVM.Loading -> setVisibilities(progressLoaderVisible = true)
-      is CentralContentVM.Empty -> setVisibilities(noSearchResultsVisible = true)
-      is CentralContentVM.SearchResults -> {
+      is LoadingVM -> setVisibilities(progressLoaderVisible = true)
+      is EmptyVM -> setVisibilities(noSearchResultsVisible = true)
+      is SearchResults -> {
         setVisibilities(searchResultsVisible = true)
         searchResultsView.render(vm)
+      }
+      is ErrorVM -> {
+        setVisibilities(errorVisible = true)
+        noSearchResultsView.render(vm)
       }
     }
   }
@@ -93,13 +98,14 @@ class CentralContentViewImpl(
   private fun setVisibilities(
     progressLoaderVisible: Boolean = false,
     noSearchResultsVisible: Boolean = false,
-    searchResultsVisible: Boolean = false) {
+    searchResultsVisible: Boolean = false,
+    errorVisible: Boolean = false) {
     if(progressLoaderVisible) {
       progressLoaderContainer.style.display = ""
     } else {
       progressLoaderContainer.style.display = "none"
     }
-    if(noSearchResultsVisible) {
+    if(noSearchResultsVisible || errorVisible) {
       noSearchResultsContainer.style.display = "flex"
     } else {
       noSearchResultsContainer.style.display = "none"

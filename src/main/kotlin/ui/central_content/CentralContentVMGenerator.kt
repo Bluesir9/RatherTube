@@ -3,9 +3,9 @@ package ui.central_content
 import ui.central_content.CentralContentVM.SearchResults
 import ui.central_content.SearchEvent.*
 import youtube.YouTubeVideo
-import ui.central_content.CentralContentVM.Loading as LoadingVM
-import ui.central_content.CentralContentVM.Empty as EmptyVM
-import ui.central_content.CentralContentVM.Error as ErrorVM
+import ui.central_content.CentralContentVM.LoadingVM
+import ui.central_content.CentralContentVM.EmptyVM
+import ui.central_content.CentralContentVM.ErrorVM
 
 interface CentralContentVMGenerator {
   operator fun invoke(searchEvent: SearchEvent): CentralContentVM
