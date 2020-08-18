@@ -1,6 +1,7 @@
 package ui.top_search_bar
 
 import config.Color
+import config.StringResource
 import extensions.createHtmlElementWithId
 import extensions.createHtmlInputElement
 import org.w3c.dom.HTMLElement
@@ -24,7 +25,7 @@ class TopSearchBarViewImpl(
           style.color = Color.PRIMARY_BLUE
         }
       ).also {
-        it.innerText = "RatherTube"
+        it.innerText = StringResource.RATHERTUBE
       }
     val topBarSearchInput =
       document.createHtmlInputElement(
@@ -35,7 +36,7 @@ class TopSearchBarViewImpl(
           resources" file/class/object kinda
           like Android has the strings.xml file.
         */
-        placeholder = "Search",
+        placeholder = StringResource.SEARCH_BOX_PLACEHOLDER,
         applyCSS = { style ->
           style.display = "flex"
           style.flex = "1"
