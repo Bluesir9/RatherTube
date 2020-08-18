@@ -62,14 +62,18 @@ object YouTubeVideoPlaybackCoordinator : YouTubeVideoPlayer, YouTubeVideoPlaybac
     if(latestMediaFileCopy != null && latestMediaFileCopy.video == video) {
       latestMediaFileCopy.platformAudio.play()
     } else {
+      if(latestMediaFileCopy != null) {
+        stopPlaying(latestMediaFileCopy)
+      }
+
       broadcastEvent(Event.Loading(video))
+
       when(val streamUrlLoadResult = youTubeVideoRepository.getStreamUrl(video)) {
         is Success -> {
           broadcastEvent(Event.Loaded(video))
           val newAudio = Audio(streamUrlLoadResult.value)
           val newMediaFile = MediaFile(video, newAudio)
           onNewMediaFileObtained(newMediaFile)
-          latestMediaFileCopy?.platformAudio?.src = ""
           newMediaFile.platformAudio.play()
         }
         is Failure -> {
@@ -77,6 +81,10 @@ object YouTubeVideoPlaybackCoordinator : YouTubeVideoPlayer, YouTubeVideoPlaybac
         }
       }
     }
+  }
+
+  private fun broadcastEvent(event: Event) {
+    eventChannel.offer(event)
   }
 
   private fun onNewMediaFileObtained(mediaFile: MediaFile) {
@@ -100,8 +108,8 @@ object YouTubeVideoPlaybackCoordinator : YouTubeVideoPlayer, YouTubeVideoPlaybac
     this.latestMediaFile = mediaFile
   }
 
-  private fun broadcastEvent(event: Event) {
-    eventChannel.offer(event)
+  private fun stopPlaying(media: MediaFile) {
+    media.platformAudio.src = ""
   }
 
   override fun pauseRequested() {
