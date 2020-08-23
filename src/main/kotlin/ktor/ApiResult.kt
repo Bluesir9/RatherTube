@@ -1,5 +1,6 @@
 package ktor
 
+import config.StringResource
 import io.ktor.utils.io.errors.IOException
 import utils.RepoResult
 
@@ -23,17 +24,9 @@ fun <ApiSuccess, ApiFailure : GenericErrorResponse, RepoSuccess> ApiResult<ApiSu
     is ApiResult.Success -> RepoResult.Success(mapper(this.value))
     is ApiResult.Failure -> {
       val errorMessage = when (this.value) {
-        /*
-        FIXME:
-          These strings should be put together in a dedicated place.
-          Also, I should try mapping them to a string that be useful
-          when showing to the user.
-          Also, these error messages should always be logged somewhere
-          so that debugging becomes easier.
-        */
-        is ApiException.NetworkException -> "Network exception encountered"
+        is ApiException.NetworkException -> StringResource.NETWORK_EXCEPTION_ENCOUNTERED
         is ApiException.ServerException -> this.value.errorResponse.message
-        is ApiException.UnknownException -> "Some exception encountered"
+        is ApiException.UnknownException -> StringResource.SOME_ERROR_ENCOUNTERED
       }
       RepoResult.Failure(errorMessage)
     }
