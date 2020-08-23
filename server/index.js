@@ -13,24 +13,23 @@ const PORT = 3000;
 
 //region GET search API
 app.get("/api/youtube/search", async (request, response, next) => {
-  const query = request.query.query;
-  if (!query) {
-    const statusCode = 422;
-    const errorJSON = {
-      error_code: statusCode,
-      error_message: "Illegal value of query argument"
-    }
-    response.status(statusCode).json(errorJSON);
-  } else {
-    try {
+  try {
+    const query = request.query.query;
+    if (!query) {
+      const errorJson = {
+        apiErrorCode: 422,
+        apiErrorMessage: "Illegal value of query argument"
+      }
+      next(errorJson);
+    } else {
       const searchResults = await getSearchResults(query);
       const responseJson = {
         items: searchResults
       }
       response.status(200).json(responseJson);
-    } catch (error) {
-      next(error);
     }
+  } catch (error) {
+    next(error);
   }
 });
 
@@ -54,24 +53,23 @@ async function searchYouTube(query) {
 
 //region GET stream API
 app.get("/api/youtube/stream", async (request, response, next) => {
-  const videoId = request.query.videoId;
-  if (!videoId) {
-    const statusCode = 422;
-    const errorJSON = {
-      error_code: statusCode,
-      error_message: "Illegal value of videoId argument"
-    }
-    response.status(statusCode).json(errorJSON);
-  } else {
-    try {
+  try {
+    const videoId = request.query.videoId;
+    if (!videoId) {
+      const errorJson = {
+        apiErrorCode: 422,
+        apiErrorMessage: "Illegal value of videoId argument"
+      }
+      next(errorJson);
+    } else {
       const streamUrl = await getStreamUrl(videoId);
       const responseJSON = {
         stream_url: streamUrl
       };
       response.status(200).json(responseJSON);
-    } catch (error) {
-      next(error)
     }
+  } catch (error) {
+    next(error);
   }
 });
 
@@ -111,11 +109,13 @@ app.use((request, response, next) => {
 //region Error handler
 app.use((error, request, response, next) => {
   console.error(error);
+  let statusCode = error.apiErrorCode || 500;
+  let message = error.apiErrorMessage || "Internal server error";
   const errorJson = {
-    error_code: 500,
-    error_message: "Internal server error"
+    error_code: statusCode,
+    error_message: message
   }
-  response.status(500).json(errorJson);
+  response.status(statusCode).json(errorJson);
 });
 //endregion
 
