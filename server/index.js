@@ -12,7 +12,7 @@ app.use(cors({
 const PORT = 3000;
 
 //region GET search API
-app.get("/api/youtube/search", async (request, response) => {
+app.get("/api/youtube/search", async (request, response, next) => {
   const query = request.query.query;
   if (!query) {
     const statusCode = 422;
@@ -22,11 +22,15 @@ app.get("/api/youtube/search", async (request, response) => {
     }
     response.status(statusCode).json(errorJSON);
   } else {
-    const searchResults = await getSearchResults(query);
-    const responseJson = {
-      items: searchResults
+    try {
+      const searchResults = await getSearchResults(query);
+      const responseJson = {
+        items: searchResults
+      }
+      response.status(200).json(responseJson);
+    } catch (error) {
+      next(error);
     }
-    response.status(200).json(responseJson);
   }
 });
 
@@ -49,7 +53,7 @@ async function searchYouTube(query) {
 //endregion
 
 //region GET stream API
-app.get("/api/youtube/stream", async (request, response) => {
+app.get("/api/youtube/stream", async (request, response, next) => {
   const videoId = request.query.videoId;
   if (!videoId) {
     const statusCode = 422;
@@ -59,11 +63,15 @@ app.get("/api/youtube/stream", async (request, response) => {
     }
     response.status(statusCode).json(errorJSON);
   } else {
-    const streamUrl = await getStreamUrl(videoId);
-    const responseJSON = {
-      stream_url: streamUrl
-    };
-    response.status(200).json(responseJSON);
+    try {
+      const streamUrl = await getStreamUrl(videoId);
+      const responseJSON = {
+        stream_url: streamUrl
+      };
+      response.status(200).json(responseJSON);
+    } catch (error) {
+      next(error)
+    }
   }
 });
 
@@ -80,7 +88,35 @@ async function getStreamUrl(videoId) {
     });
   }));
 }
+//endregion
 
+//region 404 route
+/*
+Note:
+  This should always be the "last" route
+  attached. This way, its ensured that after
+  none of the routes attached prior to it are
+  matched, this route is reached and a 404
+  response is returned.
+ */
+app.use((request, response, next) => {
+  const errorJson = {
+    error_code: 404,
+    error_message: "404, route not found"
+  }
+  response.status(404).json(errorJson);
+});
+//endregion
+
+//region Error handler
+app.use((error, request, response, next) => {
+  console.error(error);
+  const errorJson = {
+    error_code: 500,
+    error_message: "Internal server error"
+  }
+  response.status(500).json(errorJson);
+});
 //endregion
 
 app.listen(PORT, () => {
