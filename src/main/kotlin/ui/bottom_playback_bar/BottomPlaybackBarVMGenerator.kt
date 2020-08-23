@@ -12,7 +12,6 @@ class BottomPlaybackBarVMGeneratorImpl : BottomPlaybackBarVMGenerator {
 
   override fun invoke(playbackEvent: Event): BottomPlaybackBarVM =
     when (playbackEvent) {
-      //FIXME: Create dedicated representation for song loading and buffering state
       is Loading,
       is Loaded,
       is Buffering,
