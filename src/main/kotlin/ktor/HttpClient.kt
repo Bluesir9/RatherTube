@@ -45,16 +45,4 @@ val httpClient = HttpClient(engine = Js.create()) {
     //10 seconds
     requestTimeoutMillis = 10000
   }
-
-  /*
-  FIXME:
-    Do I need this explicitly or does
-    the default implementation do the
-    job for me?
-  HttpResponseValidator {
-    validateResponse { response ->
-
-    }
-  }
-   */
 }
