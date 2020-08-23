@@ -21,7 +21,7 @@ class CentralNoSearchResultsView(
         id = "area_content_central_no_search_results_container_message",
         applyCSS = { style ->
           style.fontSize = "20px"
-          style.color = Color.PRIMARY_BLUE
+          style.color = Color.PRIMARY_GREEN
         }
       ) as HTMLParagraphElement
     messageElement.innerText = StringResource.NO_SEARCH_RESULTS_FOUND

@@ -131,7 +131,7 @@ class CentralSearchResultsView(
       top: 50%;
       margin-top: -20px;
       font-size: 40px;
-      color: ${Color.PRIMARY_BLUE};
+      color: ${Color.PRIMARY_GREEN};
     }
 
     .area_content_content_grid_item_hover_play_container {

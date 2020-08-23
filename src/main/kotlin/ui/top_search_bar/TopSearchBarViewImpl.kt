@@ -22,7 +22,7 @@ class TopSearchBarViewImpl(
         id = "area_top_bar_title",
         applyCSS = { style ->
           style.fontSize = "1.2rem"
-          style.color = Color.PRIMARY_BLUE
+          style.color = Color.PRIMARY_GREEN
         }
       ).also {
         it.innerText = StringResource.RATHERTUBE

@@ -22,7 +22,7 @@ class BottomQueueButtonView(
          */
         style.display = "none"
         style.fontSize = "25px"
-        style.color = Color.PRIMARY_BLUE
+        style.color = Color.PRIMARY_GREEN
       }
     )
 
