@@ -31,11 +31,6 @@ class TopSearchBarViewImpl(
       document.createHtmlInputElement(
         type = "search",
         id = "area_top_bar_search",
-        /*
-        FIXME: Move "Search" into a "string
-          resources" file/class/object kinda
-          like Android has the strings.xml file.
-        */
         placeholder = StringResource.SEARCH_BOX_PLACEHOLDER,
         applyCSS = { style ->
           style.display = "flex"
