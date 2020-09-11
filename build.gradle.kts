@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.config.KotlinCompilerVersion
 val kotlinCoroutinesVersion = "1.3.5"
 val ktorVersion = "1.3.2"
 val kotlinSerializationVersion = "0.20.0"
+val klockVersion = "1.10.3"
 
 plugins {
   id("org.jetbrains.kotlin.js") version "1.3.72"
@@ -58,6 +59,8 @@ dependencies {
   implementation(npm("text-encoding"))
   implementation(npm("fs"))
   //endregion
+
+  implementation("com.soywiz.korlibs.klock:klock-js:$klockVersion")
 }
 
 kotlin.target.browser { }
