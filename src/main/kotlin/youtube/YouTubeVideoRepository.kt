@@ -31,7 +31,8 @@ object YouTubeVideoRepositoryImpl : YouTubeVideoRepository {
           id = item.videoId,
           title = item.videoTitle,
           artist = item.videoArtist,
-          thumbnailUrl = item.videoThumbnail
+          thumbnailUrl = item.videoThumbnail,
+          length = item.videoLength
         )
       }
 
