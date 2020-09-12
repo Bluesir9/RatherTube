@@ -4,6 +4,7 @@ const youtubeScraper = require("scrape-youtube").default;
 const ytdl = require("youtube-dl");
 const express = require("express");
 const cors = require("cors");
+const moment = require("moment");
 
 const app = express();
 app.use(cors({
@@ -41,6 +42,7 @@ async function getSearchResults(query) {
         video_title: result.title,
         video_artist: result.channel.name,
         video_thumbnail: result.thumbnail,
+        video_length_millis: moment.duration(result.duration, "seconds").asMilliseconds()
       }
     });
 }
