@@ -5,26 +5,20 @@ package ui.bottom_playback_bar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import ui.base.BasePresenterImpl
-import youtube.YouTubeVideo
-import youtube.YouTubeVideoPlaybackCoordinator
-import youtube.YouTubeVideoPlaybackEventListener
-import youtube.YouTubeVideoPlaybackEventListener.Event
-import youtube.YouTubeVideoPlayer
+import playback.player.*
 
 class BottomPlaybackBarPresenterImpl :
   BottomPlaybackBarContract.Presenter,
   BasePresenterImpl<BottomPlaybackBarContract.View>() {
 
-  private val videoPlayer: YouTubeVideoPlayer = YouTubeVideoPlaybackCoordinator
-  private val videoPlaybackEventListener: YouTubeVideoPlaybackEventListener = YouTubeVideoPlaybackCoordinator
+  private val player: YouTubeVideoPlayer = YouTubeVideoPlayerImpl
   private val generateVM: BottomPlaybackBarVMGenerator = BottomPlaybackBarVMGeneratorImpl()
 
-  private var lastPlaybackEvent: Event? = null
+  private var lastPlaybackEvent: YouTubeVideoPlayer.Event? = null
 
   override fun onStart() {
-    videoPlaybackEventListener.getSongPlaybackEvents()
+    player.getEvents()
       .onEach { event -> lastPlaybackEvent = event }
       .map { generateVM(it) }
       .onEach { view.render(it) }
@@ -32,25 +26,19 @@ class BottomPlaybackBarPresenterImpl :
   }
 
   override fun goToPreviousTrackButtonClick() {
-    videoPlayer.rewindRequested()
+    player.rewind()
   }
 
   override fun goToNextTrackButtonClick() {
-    videoPlayer.forwardRequested()
+    player.forward()
   }
 
   override fun playCurrentTrackButtonClick() {
-    lastPlaybackEvent?.video?.let { playVideo(it) }
-  }
-
-  private fun playVideo(video: YouTubeVideo) {
-    launch {
-      videoPlayer.playRequested(video)
-    }
+    lastPlaybackEvent?.playbackQueueItem?.let(player::play)
   }
 
   override fun pauseCurrentTrackButtonClick() {
-    videoPlayer.pauseRequested()
+    player.pause()
   }
 
   override fun onStop() {
