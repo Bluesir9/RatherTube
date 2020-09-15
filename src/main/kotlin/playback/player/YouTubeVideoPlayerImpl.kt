@@ -41,6 +41,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
 
     fun rewind() {
       this.platformAudio.fastSeek(0.0)
+      this.platformAudio.play()
     }
   }
 
@@ -71,7 +72,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
             activeMediaFile = newMediaFile
             newMediaFile.play()
           }
-          is Failure -> showFloatingErrorMessage(StringResource.STREAM_LOAD_FAILED)
+          is Failure -> showFloatingMessage(StringResource.STREAM_LOAD_FAILED)
         }
       }
     }
@@ -83,7 +84,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
       activeMediaFileCopy.pause()
     } else {
       logger.error("Attempting to pause player when activeMediaFile is null")
-      showFloatingErrorMessage(StringResource.PAUSE_FAILED_CAUSE_NO_TRACK_FOUND)
+      showFloatingMessage(StringResource.PAUSE_FAILED_CAUSE_NO_TRACK_FOUND)
     }
   }
 
@@ -93,7 +94,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
       activeMediaFileCopy.play()
     } else {
       logger.error("Attempting to resume player when activeMediaFile is null")
-      showFloatingErrorMessage(StringResource.RESUME_FAILED_CAUSE_NO_TRACK_FOUND)
+      showFloatingMessage(StringResource.RESUME_FAILED_CAUSE_NO_TRACK_FOUND)
     }
   }
 
@@ -141,7 +142,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
       }
     } else {
       logger.error("Attempting to rewind player when activeMediaFile is null")
-      showFloatingErrorMessage(StringResource.REWIND_FAILED_CAUSE_NO_TRACK_FOUND)
+      showFloatingMessage(StringResource.REWIND_FAILED_CAUSE_NO_ACTIVE_TRACK_FOUND)
     }
   }
 
@@ -177,8 +178,12 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
         0
       }
 
-    val newPlaybackItem = playbackQueueItems[indexOfNewPlaybackItem]
-    play(newPlaybackItem)
+    if(indexOfNewPlaybackItem < playbackQueueItems.size) {
+      val newPlaybackItem = playbackQueueItems[indexOfNewPlaybackItem]
+      play(newPlaybackItem)
+    } else {
+      showFloatingMessage(StringResource.FORWARD_FAILED_CAUSE_NO_TRACKS_AFTER_CURRENT)
+    }
   }
 
   override fun getEvents(): Flow<Event> = eventChannel.asFlow()
@@ -220,7 +225,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
     }
   }
 
-  private fun showFloatingErrorMessage(message: String) {
+  private fun showFloatingMessage(message: String) {
     //TODO: everything
   }
   //endregion
