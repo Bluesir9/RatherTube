@@ -41,6 +41,15 @@ class BottomPlaybackBarPresenterImpl :
     player.pause()
   }
 
+  override fun onQueueButtonClick() {
+    /*
+    TODO:
+      Pass along these click events to
+      the guy who manages visibility of
+      the Floating Queue view.
+    */
+  }
+
   override fun onStop() {
     //no-op
   }

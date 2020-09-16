@@ -13,5 +13,6 @@ interface BottomPlaybackBarContract {
     fun goToNextTrackButtonClick()
     fun playCurrentTrackButtonClick()
     fun pauseCurrentTrackButtonClick()
+    fun onQueueButtonClick()
   }
 }

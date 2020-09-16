@@ -64,6 +64,11 @@ class BottomPlaybackBarViewImpl(
       .getNextButtonClickEvents()
       .onEach { presenter.goToNextTrackButtonClick() }
       .launchIn(this)
+
+    queueButtonView
+      .getQueueButtonClickEvents()
+      .onEach { presenter.onQueueButtonClick() }
+      .launchIn(this)
   }
 
   private val applyTrackInfoContainerCSS: (style: CSSStyleDeclaration) -> Unit = { style ->
