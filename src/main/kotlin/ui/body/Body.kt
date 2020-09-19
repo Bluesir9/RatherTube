@@ -55,6 +55,7 @@ class Body : Renderable(document.body!!) {
           style.alignItems = "center"
           style.padding = "10px"
           style.boxShadow = "0 0 5px ${Color.BACKGROUND_SHADOW_GRADIENT_LIGHT}, 0 -2px 5px ${Color.BACKGROUND_SHADOW_GRADIENT_DARK}"
+          style.position = "relative"
         }
       )
 
