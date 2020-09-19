@@ -25,6 +25,7 @@ class FloatingPlaybackQueueView(
         style.bottom = "110%"
         style.right = "10px"
         style.zIndex = "2"
+        style.boxShadow = "0 0 5px ${Color.BACKGROUND_SHADOW_GRADIENT_LIGHT}, -5px -5px 5px ${Color.BACKGROUND_SHADOW_GRADIENT_DARK}"
         style.background = Color.BACKGROUND_BLACK
       }
     ).also {
