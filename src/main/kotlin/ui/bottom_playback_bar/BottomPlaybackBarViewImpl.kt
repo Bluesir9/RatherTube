@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.*
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.css.CSSStyleDeclaration
 import ui.base.Renderable
+import ui.floating_playback_queue.FloatingPlaybackQueueView
 import kotlin.browser.document
 
 @Suppress("EXPERIMENTAL_API_USAGE")
@@ -15,6 +16,7 @@ class BottomPlaybackBarViewImpl(
   private lateinit var trackInfoView: BottomPlaybackBarTrackInfoView
   private lateinit var playbackButtonsView: BottomPlaybackButtonsView
   private lateinit var queueButtonView: BottomQueueButtonView
+  private lateinit var floatingPlaybackQueueView: FloatingPlaybackQueueView
 
   private val presenter : BottomPlaybackBarContract.Presenter = BottomPlaybackBarPresenterImpl()
 
@@ -40,10 +42,16 @@ class BottomPlaybackBarViewImpl(
         applyCSS = applyTrackQueueButtonContainerCSS
       ).also { rootElement.appendChild(it) }
 
-
     trackInfoView = BottomPlaybackBarTrackInfoView(trackInfoContainer).also { it.create() }
     playbackButtonsView = BottomPlaybackButtonsView(trackPlaybackButtonsContainer).also { it.create() }
     queueButtonView = BottomQueueButtonView(trackQueueButtonContainer).also { it.create() }
+    /*
+    FloatingPlaybackQueueView takes care of building its own container,
+    so we just give the entire root element to it. Clearly this is different
+    from what we are doing in other places, so one needs to be careful about
+    this.
+     */
+    floatingPlaybackQueueView = FloatingPlaybackQueueView(rootElement).also { it.create() }
 
     playbackButtonsView
       .getPreviousButtonClickEvents()
