@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import ui.base.BasePresenterImpl
 import playback.player.*
+import ui.floating_playback_queue.QueueButtonClickEventsConsumer
+import ui.floating_playback_queue.QueueButtonClickEventsManager
 
 class BottomPlaybackBarPresenterImpl :
   BottomPlaybackBarContract.Presenter,
@@ -16,6 +18,8 @@ class BottomPlaybackBarPresenterImpl :
   private val generateVM: BottomPlaybackBarVMGenerator = BottomPlaybackBarVMGeneratorImpl()
 
   private var lastPlaybackEvent: YouTubeVideoPlayer.Event? = null
+
+  private val queueButtonClickEventsConsumer: QueueButtonClickEventsConsumer = QueueButtonClickEventsManager
 
   override fun onStart() {
     player.getEvents()
@@ -42,12 +46,7 @@ class BottomPlaybackBarPresenterImpl :
   }
 
   override fun onQueueButtonClick() {
-    /*
-    TODO:
-      Pass along these click events to
-      the guy who manages visibility of
-      the Floating Queue view.
-    */
+    queueButtonClickEventsConsumer.onQueueButtonClicked()
   }
 
   override fun onStop() {
