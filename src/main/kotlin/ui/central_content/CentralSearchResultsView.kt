@@ -55,7 +55,7 @@ class CentralSearchResultsView(
             <p class="area_content_content_grid_item_track_title">${vm.trackTitle}</p>
             <p class="area_content_content_grid_item_artist_name">${vm.trackArtist}</p>
           </div>
-          <i class="fas fa-ellipsis-v"></i>
+          <i class="fa fa-plus-circle icon_content_content_grid_item_add_to_queue"></i>
         </div>
     """.trimIndent()
 
@@ -146,6 +146,10 @@ class CentralSearchResultsView(
 
     .area_content_content_grid_item_image_container:hover .area_content_content_grid_item_hover_play_container {
       opacity: 1;
+    }
+    
+    .icon_content_content_grid_item_add_to_queue {
+      font-size: 20px;
     }
     """.trimIndent()
 }
