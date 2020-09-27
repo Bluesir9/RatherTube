@@ -3,6 +3,12 @@ package ui.floating_playback_queue
 import config.Color
 import playback.queue.PlaybackQueueItem
 
+/*
+FIXME:
+  If this will have exactly 1 implementation,
+  then why have an interface at all, just use
+  the class directly.  
+ */
 interface FloatingPlaybackQueueVMGenerator {
   /*
   `queue` can be an empty list.
