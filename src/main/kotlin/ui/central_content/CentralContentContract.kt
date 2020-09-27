@@ -9,6 +9,7 @@ interface CentralContentContract {
   }
 
   interface Presenter : BasePresenter<View> {
-    fun onSearchResultClick(id: String)
+    fun onPlaySearchResult(id: String)
+    fun onAddSearchResultToQueue(id: String)
   }
 }

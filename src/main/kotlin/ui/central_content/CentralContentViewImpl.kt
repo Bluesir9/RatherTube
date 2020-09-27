@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.onEach
 import org.w3c.dom.HTMLElement
 import ui.base.Renderable
 import ui.central_content.CentralContentVM.*
+import ui.central_content.CentralSearchResultsView.ClickEvent.AddSearchResultToQueue
+import ui.central_content.CentralSearchResultsView.ClickEvent.PlaySearchResult
 import kotlin.browser.document
 
 @Suppress("EXPERIMENTAL_API_USAGE")
@@ -72,7 +74,12 @@ class CentralContentViewImpl(
     searchResultsView = CentralSearchResultsView(searchResultsContainer).also { it.create() }
 
     searchResultsView.getGridItemClickEvents()
-      .onEach { presenter.onSearchResultClick(it) }
+      .onEach { clickEvent ->
+        when(clickEvent) {
+          is PlaySearchResult -> presenter.onPlaySearchResult(clickEvent.searchResultId)
+          is AddSearchResultToQueue -> presenter.onAddSearchResultToQueue(clickEvent.searchResultId)
+        }
+      }
       .launchIn(this)
   }
 

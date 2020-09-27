@@ -17,7 +17,12 @@ class CentralSearchResultsView(
   override val rootElement: HTMLElement
 ) : Renderable(rootElement) {
 
-  private val gridItemClickEvents = BroadcastChannel<String>(1)
+  sealed class ClickEvent(open val searchResultId: String) {
+    data class PlaySearchResult(override val searchResultId: String): ClickEvent(searchResultId)
+    data class AddSearchResultToQueue(override val searchResultId: String): ClickEvent(searchResultId)
+  }
+
+  private val gridItemClickEvents = BroadcastChannel<ClickEvent>(1)
 
   override fun initLayout() {
     val styleElement = document.createElement("style") as HTMLStyleElement
@@ -34,7 +39,7 @@ class CentralSearchResultsView(
     vm.items.forEach { renderItem(it) }
   }
 
-  fun getGridItemClickEvents(): Flow<String> = gridItemClickEvents.asFlow()
+  fun getGridItemClickEvents(): Flow<ClickEvent> = gridItemClickEvents.asFlow()
 
   private fun renderItem(vm: Item) {
     val container = document.createHtmlElementWithClass(
@@ -59,8 +64,18 @@ class CentralSearchResultsView(
         </div>
     """.trimIndent()
 
-    container.onclick = {
-      gridItemClickEvents.offer(vm.id)
+    val imageContainer =
+      container.getElementsByClassName("area_content_content_grid_item_image_container")
+        .item(0)!! as HTMLElement
+    imageContainer.onclick = {
+      gridItemClickEvents.offer(ClickEvent.PlaySearchResult(vm.id))
+    }
+
+    val addToQueueButton =
+      container.getElementsByClassName("icon_content_content_grid_item_add_to_queue")
+        .item(0)!! as HTMLElement
+    addToQueueButton.onclick = {
+      gridItemClickEvents.offer(ClickEvent.AddSearchResultToQueue(vm.id))
     }
 
     rootElement.appendChild(container)
