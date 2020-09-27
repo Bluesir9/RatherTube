@@ -9,6 +9,8 @@ interface FloatingPlaybackQueueContract {
   }
 
   interface Presenter : BasePresenter<View> {
-
+    fun onClearQueueButtonClick()
+    fun onPlayQueueItemClick(itemVM: FloatingPlaybackQueueVM.Item)
+    fun onRemoveQueueItemClick(itemVM: FloatingPlaybackQueueVM.Item)
   }
 }
