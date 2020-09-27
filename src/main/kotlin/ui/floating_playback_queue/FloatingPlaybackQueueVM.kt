@@ -26,7 +26,6 @@ data class FloatingPlaybackQueueVM(
     */
     val backgroundColor: String,
     val trackTitle: String,
-    val trackArtist: String,
-    val thumbnailUrl: String
+    val trackArtist: String
   )
 }

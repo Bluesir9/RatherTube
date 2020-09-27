@@ -30,8 +30,7 @@ class FloatingPlaybackQueueVMGeneratorImpl : FloatingPlaybackQueueVMGenerator {
       id = queueItem.id,
       backgroundColor = getBackgroundColor(index),
       trackTitle = queueItem.video.title,
-      trackArtist = queueItem.video.artist,
-      thumbnailUrl = queueItem.video.thumbnailUrl
+      trackArtist = queueItem.video.artist
     )
 
   /*
