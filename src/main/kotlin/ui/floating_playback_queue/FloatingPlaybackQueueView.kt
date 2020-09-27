@@ -315,7 +315,7 @@ class FloatingPlaybackQueueView(
       }
       
       .area_bottom_play_menu_floating_playback_queue_list_item:hover {
-        background: ${Color.BACKGROUND_BLACK_HIGHLIGHT_ON_HOVER_PLAYBACK_QUEUE_ITEM}
+        background: ${Color.BACKGROUND_PLAYBACK_QUEUE_ITEM_NOT_ACTIVELY_PLAYING}
       }
       
       .area_bottom_play_menu_floating_playback_queue_list_item_content_container {
