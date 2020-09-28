@@ -56,3 +56,6 @@ fun Document.createHtmlInputElement(
     this.placeholder = placeholder
   }
 }
+
+fun Document.getHTMLElementById(id: String): HTMLElement =
+  this.getElementById(id) as HTMLElement
