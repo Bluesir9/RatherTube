@@ -30,7 +30,8 @@ class FloatingPlaybackQueueVMGeneratorImpl : FloatingPlaybackQueueVMGenerator {
       id = queueItem.id,
       backgroundColor = getBackgroundColor(index),
       trackTitle = queueItem.video.title,
-      trackArtist = queueItem.video.artist
+      trackArtist = queueItem.video.artist,
+      isActivelyPlaying = index == 0
     )
 
   /*
@@ -44,5 +45,5 @@ class FloatingPlaybackQueueVMGeneratorImpl : FloatingPlaybackQueueVMGenerator {
    */
   private fun getBackgroundColor(index: Int): String =
     if(index == 0) Color.BACKGROUND_PLAYBACK_QUEUE_ITEM_ACTIVELY_PLAYING
-    else Color.BACKGROUND_PLAYBACK_QUEUE_ITEM_NOT_ACTIVELY_PLAYING
+    else Color.BACKGROUND_BLACK
 }

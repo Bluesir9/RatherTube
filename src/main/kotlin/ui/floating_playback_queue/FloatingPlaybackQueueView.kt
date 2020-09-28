@@ -1,17 +1,22 @@
 package ui.floating_playback_queue
 
 import config.Color
-import extensions.createHtmlElementWithId
+import extensions.*
+import extensions.StyleDisplay.Flex
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLStyleElement
 import ui.base.Renderable
 import kotlin.browser.document
+import kotlin.dom.clear
 
 class FloatingPlaybackQueueView(
   override val rootElement: HTMLElement
 ) : Renderable(rootElement), FloatingPlaybackQueueContract.View {
 
   private lateinit var container: HTMLElement
+  private lateinit var emptyListContainer: HTMLElement
+  private lateinit var queueListContainer: HTMLElement
+  private lateinit var clearButton: HTMLElement
 
   private val presenter: FloatingPlaybackQueueContract.Presenter = FloatingPlaybackQueuePresenterImpl()
 
@@ -19,9 +24,37 @@ class FloatingPlaybackQueueView(
     setupCSS()
 
     container = setupHTML()
+    /*
+    The floating menu will not be visible initially.
+    */
     container.hidden = true
 
     rootElement.appendChild(container)
+
+    emptyListContainer =
+      document.getHTMLElementById("area_bottom_play_menu_floating_playback_queue_empty_content_container")
+    emptyListContainer.hidden = false
+
+    queueListContainer =
+      document.getHTMLElementById("area_bottom_play_menu_floating_playback_queue_list_container")
+
+    /*
+    We won't have any queue items to show initially so no point
+    in keeping this visible.
+    */
+    queueListContainer.hidden = true
+
+    clearButton =
+      document.getHTMLElementById("area_bottom_play_menu_floating_playback_queue_header_clear_label")
+    /*
+    We won't have any queue items to show initially so no point
+    in showing the clear button either.
+    */
+    clearButton.hidden = true
+    clearButton.onclick = {
+      presenter.onClearQueueButtonClick()
+    }
+
   }
 
   private fun setupHTML(): HTMLElement {
@@ -37,204 +70,10 @@ class FloatingPlaybackQueueView(
           <p id="area_bottom_play_menu_floating_playback_queue_header_clear_label">CLEAR</p>
         </div>
         <div id="area_bottom_play_menu_floating_playback_queue_content_container">
-          <div id="area_bottom_play_menu_floating_playback_queue_empty_content_container" hidden>
+          <div id="area_bottom_play_menu_floating_playback_queue_empty_content_container">
             <p id="area_bottom_play_menu_floating_playback_queue_empty_content_container_label">No playback items</p>
           </div>
-          <div id="area_bottom_play_menu_floating_playback_queue_list_container">
-          
-            <div class="area_bottom_play_menu_floating_playback_queue_list_item">
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-                  <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">Sleep</p>
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">Godspeed You! Black Emperor</p>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_menu_container">
-                  <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_menu"></i>
-                </div>
-              </div>
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
-            </div>
-            
-            <div class="area_bottom_play_menu_floating_playback_queue_list_item">
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-                  <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">Sleep</p>
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">Godspeed You! Black Emperor</p>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_menu_container">
-                  <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_menu"></i>
-                </div>
-              </div>
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
-            </div>
-            
-            <div class="area_bottom_play_menu_floating_playback_queue_list_item">
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-                  <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">Sleep</p>
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">Godspeed You! Black Emperor</p>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_menu_container">
-                  <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_menu"></i>
-                </div>
-              </div>
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
-            </div>
-            
-            <div class="area_bottom_play_menu_floating_playback_queue_list_item">
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-                  <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">Sleep</p>
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">Godspeed You! Black Emperor</p>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_menu_container">
-                  <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_menu"></i>
-                </div>
-              </div>
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
-            </div>
-            
-            <div class="area_bottom_play_menu_floating_playback_queue_list_item">
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-                  <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">Sleep</p>
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">Godspeed You! Black Emperor</p>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_menu_container">
-                  <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_menu"></i>
-                </div>
-              </div>
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
-            </div>
-            
-            <div class="area_bottom_play_menu_floating_playback_queue_list_item">
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-                  <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">Sleep</p>
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">Godspeed You! Black Emperor</p>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_menu_container">
-                  <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_menu"></i>
-                </div>
-              </div>
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
-            </div>
-            
-            <div class="area_bottom_play_menu_floating_playback_queue_list_item">
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-                  <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">Sleep</p>
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">Godspeed You! Black Emperor</p>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_menu_container">
-                  <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_menu"></i>
-                </div>
-              </div>
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
-            </div>
-            
-            <div class="area_bottom_play_menu_floating_playback_queue_list_item">
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-                  <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">Sleep</p>
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">Godspeed You! Black Emperor</p>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_menu_container">
-                  <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_menu"></i>
-                </div>
-              </div>
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
-            </div>
-            
-            <div class="area_bottom_play_menu_floating_playback_queue_list_item">
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-                  <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">Sleep</p>
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">Godspeed You! Black Emperor</p>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_menu_container">
-                  <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_menu"></i>
-                </div>
-              </div>
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
-            </div>
-            
-            <div class="area_bottom_play_menu_floating_playback_queue_list_item">
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-                  <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">Sleep</p>
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">Godspeed You! Black Emperor</p>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_menu_container">
-                  <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_menu"></i>
-                </div>
-              </div>
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
-            </div>
-            
-            <div class="area_bottom_play_menu_floating_playback_queue_list_item">
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-                  <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">Sleep</p>
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">Godspeed You! Black Emperor</p>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_menu_container">
-                  <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_menu"></i>
-                </div>
-              </div>
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
-            </div>
-            
-            <div class="area_bottom_play_menu_floating_playback_queue_list_item">
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-                  <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">Sleep</p>
-                  <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">Godspeed You! Black Emperor</p>
-                </div>
-                <div class="area_bottom_play_menu_floating_playback_queue_list_item_menu_container">
-                  <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_menu"></i>
-                </div>
-              </div>
-              <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
-            </div>
-            
-          </div>
+          <div id="area_bottom_play_menu_floating_playback_queue_list_container"></div>
         </div>
       </div>
     """.trimIndent()
@@ -281,6 +120,7 @@ class FloatingPlaybackQueueView(
         color: #202020;
         padding: 10px;
         border-radius: 4px;
+        cursor: pointer;
       }
 
       #area_bottom_play_menu_floating_playback_queue_content_container {
@@ -314,8 +154,12 @@ class FloatingPlaybackQueueView(
         flex-direction: column;
       }
       
-      .area_bottom_play_menu_floating_playback_queue_list_item:hover {
+      .area_bottom_play_menu_floating_playback_queue_list_item_inactive:hover {
         background: ${Color.BACKGROUND_PLAYBACK_QUEUE_ITEM_NOT_ACTIVELY_PLAYING}
+      }
+      
+      .area_bottom_play_menu_floating_playback_queue_list_item_active {
+        background: ${Color.BACKGROUND_PLAYBACK_QUEUE_ITEM_ACTIVELY_PLAYING}
       }
       
       .area_bottom_play_menu_floating_playback_queue_list_item_content_container {
@@ -361,7 +205,7 @@ class FloatingPlaybackQueueView(
         font-size: 0.8rem;
       }
       
-      .area_bottom_play_menu_floating_playback_queue_list_item_menu_container {
+      .area_bottom_play_menu_floating_playback_queue_list_item_remove_container {
         flex: 0;
         display: flex;
         flex-direction: column;
@@ -372,7 +216,7 @@ class FloatingPlaybackQueueView(
         font-size: 25px;  
       }
       
-      .icon_bottom_play_menu_floating_playback_queue_list_item_menu {
+      .icon_bottom_play_menu_floating_playback_queue_list_item_remove {
         font-size: 20px;
       }
     """.trimIndent()
@@ -385,6 +229,58 @@ class FloatingPlaybackQueueView(
 
   override fun render(vm: FloatingPlaybackQueueVM) {
     container.hidden = !vm.visible
+    clearButton.hidden = !vm.clearButtonEnabled
+    if (vm.items.isEmpty()) renderEmptyQueue()
+    else renderQueueOfItems(vm.items)
+  }
+
+  private fun renderQueueOfItems(items: List<FloatingPlaybackQueueVM.Item>) {
+    emptyListContainer.hide()
+
+    queueListContainer.clear()
+    queueListContainer.show(Flex)
+    items.forEach(this::renderQueueItem)
+  }
+
+  private fun renderQueueItem(item: FloatingPlaybackQueueVM.Item) {
+    val activeOrInactiveClassName =
+      if (!item.isActivelyPlaying) "area_bottom_play_menu_floating_playback_queue_list_item_inactive"
+      else "area_bottom_play_menu_floating_playback_queue_list_item_active"
+
+    val queueItemContainer =
+      document.createHtmlElementWithClass(
+        localName = "div",
+        clazz = "area_bottom_play_menu_floating_playback_queue_list_item $activeOrInactiveClassName",
+        applyCSS = null
+      )
+    queueItemContainer.innerHTML = """
+      <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
+        <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
+          <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
+        </div>
+        <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
+          <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">${item.trackTitle}</p>
+          <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">${item.trackArtist}</p>
+        </div>
+        <div class="area_bottom_play_menu_floating_playback_queue_list_item_remove_container">
+          <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_remove"></i>
+        </div>
+      </div>
+      <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>
+    """.trimIndent()
+
+    queueItemContainer.getFirstHTMLElementByClassName("area_bottom_play_menu_floating_playback_queue_list_item_play_image_container")
+      .onclick = { presenter.onPlayQueueItemClick(item) }
+
+    queueItemContainer.getFirstHTMLElementByClassName("area_bottom_play_menu_floating_playback_queue_list_item_remove_container")
+      .onclick = { presenter.onRemoveQueueItemClick(item) }
+
+    queueListContainer.appendChild(queueItemContainer)
+  }
+
+  private fun renderEmptyQueue() {
+    queueListContainer.hide()
+    emptyListContainer.show(Flex)
   }
 
   override fun onDestroy() {
