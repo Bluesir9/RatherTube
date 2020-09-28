@@ -2,6 +2,7 @@ package ui.central_content
 
 import config.Color
 import extensions.createHtmlElementWithClass
+import extensions.getFirstHTMLElementByClassName
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -64,17 +65,11 @@ class CentralSearchResultsView(
         </div>
     """.trimIndent()
 
-    val imageContainer =
-      container.getElementsByClassName("area_content_content_grid_item_image_container")
-        .item(0)!! as HTMLElement
-    imageContainer.onclick = {
+    container.getFirstHTMLElementByClassName("area_content_content_grid_item_image_container").onclick = {
       gridItemClickEvents.offer(ClickEvent.PlaySearchResult(vm.id))
     }
 
-    val addToQueueButton =
-      container.getElementsByClassName("icon_content_content_grid_item_add_to_queue")
-        .item(0)!! as HTMLElement
-    addToQueueButton.onclick = {
+    container.getFirstHTMLElementByClassName("icon_content_content_grid_item_add_to_queue").onclick = {
       gridItemClickEvents.offer(ClickEvent.AddSearchResultToQueue(vm.id))
     }
 
