@@ -1,6 +1,8 @@
 package ui.bottom_playback_bar
 
 import extensions.createHtmlElementWithId
+import logging.Logger
+import logging.LoggerImpl
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLParagraphElement
 import org.w3c.dom.css.CSSStyleDeclaration
@@ -10,6 +12,8 @@ import kotlin.browser.document
 class BottomPlaybackBarTrackInfoView(
   override val rootElement: HTMLElement
 ) : Renderable(rootElement) {
+
+  private val logger: Logger = LoggerImpl(BottomPlaybackBarTrackInfoView::class.simpleName!!)
 
   private lateinit var songNameElement: HTMLParagraphElement
   private lateinit var artistNameElement: HTMLParagraphElement
@@ -48,6 +52,7 @@ class BottomPlaybackBarTrackInfoView(
   }
 
   fun render(vm: BottomPlaybackBarVM) {
+    logger.info("render -> $vm")
     songNameElement.innerHTML = vm.trackTitle
     artistNameElement.innerHTML = vm.trackArtist
   }

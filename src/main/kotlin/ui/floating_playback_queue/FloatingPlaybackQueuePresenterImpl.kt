@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import logging.Logger
 import logging.LoggerImpl
+import playback.queue.ClearPlaybackQueue
 import playback.queue.PlaybackQueue
 import playback.queue.PlaybackQueueImpl
 import playback.queue.PlaybackQueueItem
@@ -24,6 +25,7 @@ class FloatingPlaybackQueuePresenterImpl :
   private lateinit var playbackQueueItems: List<PlaybackQueueItem>
   private val logger: Logger = LoggerImpl(FloatingPlaybackQueuePresenterImpl::class.simpleName!!)
   private val play = Play()
+  private val clearPlaybackQueue = ClearPlaybackQueue()
 
   override fun onStart() {
     playbackQueue.stream()
@@ -39,7 +41,7 @@ class FloatingPlaybackQueuePresenterImpl :
   }
 
   override fun onClearQueueButtonClick() {
-    playbackQueue.clear()
+    clearPlaybackQueue()
   }
 
   override fun onPlayQueueItemClick(itemVM: FloatingPlaybackQueueVM.Item) {

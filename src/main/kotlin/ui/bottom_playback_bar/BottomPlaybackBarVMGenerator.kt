@@ -3,6 +3,7 @@ package ui.bottom_playback_bar
 import youtube.YouTubeVideo
 import playback.player.YouTubeVideoPlayer.Event
 import playback.player.YouTubeVideoPlayer.Event.*
+import playback.player.YouTubeVideoPlayer.Event.WithPlayable.*
 
 interface BottomPlaybackBarVMGenerator {
   operator fun invoke(playbackEvent: Event): BottomPlaybackBarVM
@@ -12,11 +13,35 @@ class BottomPlaybackBarVMGeneratorImpl : BottomPlaybackBarVMGenerator {
 
   override fun invoke(playbackEvent: Event): BottomPlaybackBarVM =
     when (playbackEvent) {
+      is WithoutPlayable -> getWithoutPlayableVM(playbackEvent)
+      is WithPlayable -> getWithPlayableVM(playbackEvent)
+    }
+
+  private fun getWithoutPlayableVM(event: WithoutPlayable): BottomPlaybackBarVM =
+    when (event) {
+      is WithoutPlayable.Cleared -> BottomPlaybackBarVM(
+        trackTitle = "",
+        trackArtist = "",
+        playButtonVisible = true,
+        pauseButtonVisible = false
+      )
+    }
+
+  private fun getWithPlayableVM(event: WithPlayable): BottomPlaybackBarVM =
+    when (event) {
       is Loading,
       is Loaded,
       is Buffering,
-      is Playing -> getVM(video = playbackEvent.playbackQueueItem.video, playButtonVisible = false, pauseButtonVisible = true)
-      is Paused -> getVM(video = playbackEvent.playbackQueueItem.video, playButtonVisible = true, pauseButtonVisible = false)
+      is Playing -> getVM(
+        video = event.playbackQueueItem.video,
+        playButtonVisible = false,
+        pauseButtonVisible = true
+      )
+      is Paused -> getVM(
+        video = event.playbackQueueItem.video,
+        playButtonVisible = true,
+        pauseButtonVisible = false
+      )
       /*
       FIXME:
         Load has failed so I should have a dedicated

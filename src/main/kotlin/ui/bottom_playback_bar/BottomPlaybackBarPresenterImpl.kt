@@ -5,6 +5,8 @@ package ui.bottom_playback_bar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import logging.Logger
+import logging.LoggerImpl
 import ui.base.BasePresenterImpl
 import playback.player.*
 import ui.floating_playback_queue.QueueButtonClickEventsConsumer
@@ -13,6 +15,8 @@ import ui.floating_playback_queue.QueueButtonClickEventsManager
 class BottomPlaybackBarPresenterImpl :
   BottomPlaybackBarContract.Presenter,
   BasePresenterImpl<BottomPlaybackBarContract.View>() {
+
+  private val logger: Logger = LoggerImpl(BottomPlaybackBarPresenterImpl::class.simpleName!!)
 
   private val player: YouTubeVideoPlayer = YouTubeVideoPlayerImpl
   private val generateVM: BottomPlaybackBarVMGenerator = BottomPlaybackBarVMGeneratorImpl()
@@ -23,6 +27,7 @@ class BottomPlaybackBarPresenterImpl :
 
   override fun onStart() {
     player.getEvents()
+      .onEach { logger.info("Event retrieved from player -> $it") }
       .onEach { event -> lastPlaybackEvent = event }
       .map { generateVM(it) }
       .onEach { view.render(it) }
@@ -38,7 +43,9 @@ class BottomPlaybackBarPresenterImpl :
   }
 
   override fun playCurrentTrackButtonClick() {
-    lastPlaybackEvent?.playbackQueueItem?.let(player::play)
+    lastPlaybackEvent?.let {
+      if(it is YouTubeVideoPlayer.Event.WithPlayable) player.play(it.playbackQueueItem)
+    }
   }
 
   override fun pauseCurrentTrackButtonClick() {

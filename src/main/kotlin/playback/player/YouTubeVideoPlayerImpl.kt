@@ -51,6 +51,10 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
   private val logger: Logger = LoggerImpl(YouTubeVideoPlayerImpl::class.simpleName!!)
   private val playbackQueue: PlaybackQueue = PlaybackQueueImpl
 
+  init {
+    broadcastEvent(Event.WithoutPlayable.Cleared)
+  }
+
   //region override
   override fun play(playbackQueueItem: PlaybackQueueItem) {
     val activeMediaFileCopy = activeMediaFile
@@ -186,16 +190,26 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
     }
   }
 
+  override fun clear() {
+    val activeMediaFileCopy = activeMediaFile
+    if(activeMediaFileCopy != null) {
+      clearMediaFileEventListeners(activeMediaFileCopy)
+      activeMediaFileCopy.stop()
+      activeMediaFile = null
+    }
+    broadcastEvent(Event.WithoutPlayable.Cleared)
+  }
+
   override fun getEvents(): Flow<Event> = eventChannel.asFlow()
   //endregion
 
   //region private
   private suspend fun getStreamUrl(playbackQueueItem: PlaybackQueueItem): RepoResult<String> {
-    broadcastEvent(Event.Loading(playbackQueueItem))
+    broadcastEvent(Event.WithPlayable.Loading(playbackQueueItem))
     val repoResult = youTubeVideoRepo.getStreamUrl(playbackQueueItem.video)
     val eventToBroadcast = when (repoResult) {
-      is Success -> Event.Loaded(playbackQueueItem)
-      is Failure -> Event.LoadFailed(playbackQueueItem, repoResult.message)
+      is Success -> Event.WithPlayable.Loaded(playbackQueueItem)
+      is Failure -> Event.WithPlayable.LoadFailed(playbackQueueItem, repoResult.message)
     }
     broadcastEvent(eventToBroadcast)
     return repoResult
@@ -208,7 +222,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
   private fun setupMediaFileEventListeners(mediaFile: MediaFile) {
     mediaFile.platformAudio.ontimeupdate = {
       broadcastEvent(
-        Event.Playing(
+        Event.WithPlayable.Playing(
           playbackQueueItem = mediaFile.playbackQueueItem,
           playedLength = mediaFile.platformAudio.playedLength
         )
@@ -217,12 +231,17 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
 
     mediaFile.platformAudio.onpause = {
       broadcastEvent(
-        Event.Paused(
+        Event.WithPlayable.Paused(
           playbackQueueItem = mediaFile.playbackQueueItem,
           playedLength = mediaFile.platformAudio.playedLength
         )
       )
     }
+  }
+
+  private fun clearMediaFileEventListeners(mediaFile: MediaFile) {
+    mediaFile.platformAudio.ontimeupdate = null
+    mediaFile.platformAudio.onpause = null
   }
 
   private fun showFloatingMessage(message: String) {
