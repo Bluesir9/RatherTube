@@ -19,13 +19,6 @@ class Play {
   }
 
   operator fun invoke(playbackQueueItem: PlaybackQueueItem) {
-    /*
-    TODO:
-      The song is already present in the queue and the
-      user wants to play it directly. This should not
-      alter the queue in any shape and form and simply
-      begin playing the song being pointed to by this
-      playback queue item.
-    */
+    player.play(playbackQueueItem)
   }
 }
