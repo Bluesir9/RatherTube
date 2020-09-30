@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import logging.Logger
 import logging.LoggerImpl
-import playback.queue.AddSongToPlaybackQueue
+import playback.queue.AddVideoToPlaybackQueue
 import playback.queue.PlaybackQueue
 import playback.queue.PlaybackQueueImpl
 import playback.usecases.Play
@@ -23,7 +23,7 @@ class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresen
   private val generateVM: CentralContentVMGenerator = CentralContentVMGeneratorImpl()
   private val play: Play = Play()
   private val playbackQueue: PlaybackQueue = PlaybackQueueImpl
-  private val addSongToPlaybackQueue = AddSongToPlaybackQueue()
+  private val addVideoToPlaybackQueue = AddVideoToPlaybackQueue()
 
   private lateinit var lastSearchEvent: SearchEvent
   private lateinit var lastVM: CentralContentVM
@@ -53,7 +53,7 @@ class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresen
     logger.debug("onAddSearchResultToQueue clicked")
     val video = findVideoFromLoadedVideos(id)
     if(video != null) {
-      addSongToPlaybackQueue(video)
+      addVideoToPlaybackQueue(video)
     } else {
       logger.error("Failed to find video from last loaded videos. Can't add to queue, search result with id = $id")
       //TODO: Show floating error message

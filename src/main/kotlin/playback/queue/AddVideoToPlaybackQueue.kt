@@ -4,7 +4,7 @@ import playback.player.YouTubeVideoPlayer
 import playback.player.YouTubeVideoPlayerImpl
 import youtube.YouTubeVideo
 
-class AddSongToPlaybackQueue {
+class AddVideoToPlaybackQueue {
 
   private val playbackQueue: PlaybackQueue = PlaybackQueueImpl
   private val player: YouTubeVideoPlayer = YouTubeVideoPlayerImpl
