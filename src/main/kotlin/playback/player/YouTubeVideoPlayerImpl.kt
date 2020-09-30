@@ -190,6 +190,8 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
     }
   }
 
+  override fun getCurrentlyPlayingItem(): PlaybackQueueItem? = activeMediaFile?.playbackQueueItem
+
   override fun clear() {
     val activeMediaFileCopy = activeMediaFile
     if(activeMediaFileCopy != null) {

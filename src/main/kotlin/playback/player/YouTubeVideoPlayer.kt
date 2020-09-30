@@ -69,5 +69,6 @@ interface YouTubeVideoPlayer {
   fun rewind()
   fun forward()
   fun clear()
+  fun getCurrentlyPlayingItem(): PlaybackQueueItem?
   fun getEvents(): Flow<Event>
 }

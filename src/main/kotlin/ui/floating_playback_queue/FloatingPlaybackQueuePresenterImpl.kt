@@ -7,10 +7,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import logging.Logger
 import logging.LoggerImpl
-import playback.queue.ClearPlaybackQueue
-import playback.queue.PlaybackQueue
-import playback.queue.PlaybackQueueImpl
-import playback.queue.PlaybackQueueItem
+import playback.queue.*
 import playback.usecases.Play
 import ui.base.BasePresenterImpl
 
@@ -26,6 +23,7 @@ class FloatingPlaybackQueuePresenterImpl :
   private val logger: Logger = LoggerImpl(FloatingPlaybackQueuePresenterImpl::class.simpleName!!)
   private val play = Play()
   private val clearPlaybackQueue = ClearPlaybackQueue()
+  private val removeFromPlaybackQueue = RemoveFromPlaybackQueue()
 
   override fun onStart() {
     playbackQueue.stream()
@@ -58,7 +56,7 @@ class FloatingPlaybackQueuePresenterImpl :
   override fun onRemoveQueueItemClick(itemVM: FloatingPlaybackQueueVM.Item) {
     val playbackQueueItem = getMatchingPlaybackQueueItem(itemVM)
     if(playbackQueueItem != null) {
-      playbackQueue.remove(playbackQueueItem)
+      removeFromPlaybackQueue(playbackQueueItem)
     } else {
       logger.error("Failed to find playback queue item clicked in playback queue, so cant remove it. " +
         "Item VM = $itemVM, playbackQueueItems = $playbackQueueItems")
