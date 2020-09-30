@@ -7,8 +7,6 @@ import kotlinx.coroutines.flow.onEach
 import logging.Logger
 import logging.LoggerImpl
 import playback.queue.AddVideoToPlaybackQueue
-import playback.queue.PlaybackQueue
-import playback.queue.PlaybackQueueImpl
 import playback.usecases.Play
 import ui.base.BasePresenterImpl
 import ui.central_content.SearchEvent.Loaded
@@ -22,7 +20,6 @@ class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresen
   private val searchEventsListener: SearchEventsListener = SearchResultsUICoordinator
   private val generateVM: CentralContentVMGenerator = CentralContentVMGeneratorImpl()
   private val play: Play = Play()
-  private val playbackQueue: PlaybackQueue = PlaybackQueueImpl
   private val addVideoToPlaybackQueue = AddVideoToPlaybackQueue()
 
   private lateinit var lastSearchEvent: SearchEvent
