@@ -1,3 +1,5 @@
+@file:Suppress("MoveLambdaOutsideParentheses")
+
 package ui.floating_playback_queue
 
 import config.Color
@@ -13,37 +15,36 @@ interface FloatingPlaybackQueueVMGenerator {
   /*
   `queue` can be an empty list.
    */
-  operator fun invoke(currentVM: FloatingPlaybackQueueVM, queue: List<PlaybackQueueItem>): FloatingPlaybackQueueVM
+  operator fun invoke(
+    currentVM: FloatingPlaybackQueueVM,
+    queue: List<PlaybackQueueItem>,
+    currentPlaybackItem: PlaybackQueueItem?
+  ): FloatingPlaybackQueueVM
 }
 
 class FloatingPlaybackQueueVMGeneratorImpl : FloatingPlaybackQueueVMGenerator {
 
-  override fun invoke(currentVM: FloatingPlaybackQueueVM, queue: List<PlaybackQueueItem>): FloatingPlaybackQueueVM =
+  override fun invoke(
+    currentVM: FloatingPlaybackQueueVM,
+    queue: List<PlaybackQueueItem>,
+    currentPlaybackItem: PlaybackQueueItem?
+  ): FloatingPlaybackQueueVM =
     FloatingPlaybackQueueVM(
       visible = currentVM.visible,
       clearButtonEnabled = queue.isNotEmpty(),
-      items = queue.mapIndexed { index, queueItem -> getItemVMs(index, queueItem) }
+      items = queue.map { queueItem -> getItemVMs(queueItem, queueItem == currentPlaybackItem) }
     )
 
-  private fun getItemVMs(index: Int, queueItem: PlaybackQueueItem): FloatingPlaybackQueueVM.Item =
+  private fun getItemVMs(queueItem: PlaybackQueueItem, isCurrentlyPlaying: Boolean): FloatingPlaybackQueueVM.Item =
     FloatingPlaybackQueueVM.Item(
       id = queueItem.id,
-      backgroundColor = getBackgroundColor(index),
+      backgroundColor = getBackgroundColor(isCurrentlyPlaying),
       trackTitle = queueItem.video.title,
       trackArtist = queueItem.video.artist,
-      isActivelyPlaying = index == 0
+      isActivelyPlaying = isCurrentlyPlaying
     )
 
-  /*
-  FIXME:
-    The actual player will need to update
-    the playback queue to indicate which item
-    is actively being played so that we can
-    implement this function more accurately
-    to indicate the queue item which is being
-    played actively.
-   */
-  private fun getBackgroundColor(index: Int): String =
-    if(index == 0) Color.BACKGROUND_PLAYBACK_QUEUE_ITEM_ACTIVELY_PLAYING
+  private fun getBackgroundColor(isItemCurrentlyPlaying: Boolean): String =
+    if(isItemCurrentlyPlaying) Color.BACKGROUND_PLAYBACK_QUEUE_ITEM_ACTIVELY_PLAYING
     else Color.BACKGROUND_BLACK
 }
