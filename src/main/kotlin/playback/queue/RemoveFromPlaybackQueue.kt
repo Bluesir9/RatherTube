@@ -26,15 +26,39 @@ class RemoveFromPlaybackQueue {
   private fun removeCurrentlyPlayingItemFromPlaybackQueue(currentlyPlayingItem: PlaybackQueueItem) {
     val playbackQueueItems = playbackQueue.get()
     val indexOfCurrentPlaybackItem = playbackQueueItems.indexOf(currentlyPlayingItem)
-    /*
-    If the currently playing item was the last item in the playback queue then there is no other item left
-    to be played in the playback queue. Hence the `getOrNull` usage.
-    */
-    val itemToPlayNext = playbackQueueItems.getOrNull(indexOfCurrentPlaybackItem + 1)
+    val itemToPlayNext = getItemToPlayNext(playbackQueueItems, indexOfCurrentPlaybackItem)
     playbackQueue.remove(currentlyPlayingItem)
     player.clear()
     if(itemToPlayNext != null) {
       play(itemToPlayNext)
+    }
+  }
+
+  @Suppress("LiftReturnOrAssignment")
+  private fun getItemToPlayNext(
+    playbackQueueItems: List<PlaybackQueueItem>,
+    currentPlaybackItemIndex: Int
+  ): PlaybackQueueItem? {
+    /*
+    Start by trying to find the item right after the current playback item.
+    */
+    val itemAfterCurrentPlaybackItem = playbackQueueItems.getOrNull(currentPlaybackItemIndex + 1)
+    if(itemAfterCurrentPlaybackItem != null) {
+      return itemAfterCurrentPlaybackItem
+    } else {
+      /*
+      Current item was the last item in the playback queue. Lets find the previous item.
+      */
+      val itemBeforeCurrentPlaybackItem = playbackQueueItems.getOrNull(currentPlaybackItemIndex - 1)
+      if(itemBeforeCurrentPlaybackItem != null) {
+        return itemBeforeCurrentPlaybackItem
+      } else {
+        /*
+        Current item was the singular item in the playback queue. Removing it will make
+        the queue empty. Nothing to play after this ¯\_(ツ)_/¯
+        */
+        return null
+      }
     }
   }
 }
