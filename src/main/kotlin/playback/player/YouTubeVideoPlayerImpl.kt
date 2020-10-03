@@ -65,7 +65,11 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
       */
       activeMediaFileCopy.play()
     } else {
-      activeMediaFileCopy?.stop()
+      /*
+      Attempting to play an item different the one currently available inside the player.
+      So clear the available item and make way for new item.
+      */
+      clearActiveMediaFile()
 
       launch {
         when (val streamUrlLoadResult = getStreamUrl(playbackQueueItem)) {
@@ -193,12 +197,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
   override fun getCurrentlyPlayingItem(): PlaybackQueueItem? = activeMediaFile?.playbackQueueItem
 
   override fun clear() {
-    val activeMediaFileCopy = activeMediaFile
-    if(activeMediaFileCopy != null) {
-      clearMediaFileEventListeners(activeMediaFileCopy)
-      activeMediaFileCopy.stop()
-      activeMediaFile = null
-    }
+    clearActiveMediaFile()
     broadcastEvent(Event.WithoutPlayable.Cleared)
   }
 
@@ -238,6 +237,15 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
           playedLength = mediaFile.platformAudio.playedLength
         )
       )
+    }
+  }
+
+  private fun clearActiveMediaFile() {
+    val activeMediaFileCopy = activeMediaFile
+    if(activeMediaFileCopy != null) {
+      clearMediaFileEventListeners(activeMediaFileCopy)
+      activeMediaFileCopy.stop()
+      activeMediaFile = null
     }
   }
 
