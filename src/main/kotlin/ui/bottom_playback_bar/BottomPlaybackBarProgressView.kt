@@ -61,18 +61,6 @@ class BottomPlaybackBarProgressView(
 
     rootElement.append(progressBar, progressDot, progressTimestamp)
 
-    rootElement.onmouseover = { event ->
-      logger.info("mouse over -> X coordinate = ${event.clientX}")
-    }
-
-    rootElement.onmousemove = { event ->
-      logger.info("mouse move -> X coordinate = ${event.clientX}")
-    }
-
-    rootElement.onmouseout = { event ->
-      logger.info("mouse out -> X coordinate = ${event.clientX}")
-    }
-
     rootElement.hide()
   }
 
