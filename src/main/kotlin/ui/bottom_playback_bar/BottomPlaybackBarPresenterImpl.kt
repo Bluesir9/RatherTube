@@ -17,17 +17,13 @@ class BottomPlaybackBarPresenterImpl :
   BasePresenterImpl<BottomPlaybackBarContract.View>() {
 
   private val logger: Logger = LoggerImpl(BottomPlaybackBarPresenterImpl::class.simpleName!!)
-
   private val player: YouTubeVideoPlayer = YouTubeVideoPlayerImpl
   private val generateVM: BottomPlaybackBarVMGenerator = BottomPlaybackBarVMGeneratorImpl()
-
   private var lastPlaybackEvent: YouTubeVideoPlayer.Event? = null
-
   private val queueButtonClickEventsConsumer: QueueButtonClickEventsConsumer = QueueButtonClickEventsManager
 
   override fun onStart() {
     player.getEvents()
-      .onEach { logger.info("Event retrieved from player -> $it") }
       .onEach { event -> lastPlaybackEvent = event }
       .map { generateVM(it) }
       .onEach { view.render(it) }

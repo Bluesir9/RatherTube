@@ -48,17 +48,20 @@ interface YouTubeVideoPlayer {
       */
       data class Buffering(
         override val playbackQueueItem: PlaybackQueueItem,
-        val playedLength: TimeSpan
+        val playedLength: TimeSpan,
+        val totalLength: TimeSpan
       ) : WithPlayable(playbackQueueItem)
 
       data class Playing(
         override val playbackQueueItem: PlaybackQueueItem,
-        val playedLength: TimeSpan
+        val playedLength: TimeSpan,
+        val totalLength: TimeSpan
       ) : WithPlayable(playbackQueueItem)
 
       data class Paused(
         override val playbackQueueItem: PlaybackQueueItem,
-        val playedLength: TimeSpan
+        val playedLength: TimeSpan,
+        val totalLength: TimeSpan
       ) : WithPlayable(playbackQueueItem)
     }
   }

@@ -36,7 +36,6 @@ class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresen
   }
 
   override fun onPlaySearchResult(id: String) {
-    logger.debug("onPlaySearchResult")
     val video = findVideoFromLoadedVideos(id)
     if (video != null) {
       play(video)
@@ -47,7 +46,6 @@ class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresen
   }
 
   override fun onAddSearchResultToQueue(id: String) {
-    logger.debug("onAddSearchResultToQueue clicked")
     val video = findVideoFromLoadedVideos(id)
     if(video != null) {
       addToPlaybackQueue(video)

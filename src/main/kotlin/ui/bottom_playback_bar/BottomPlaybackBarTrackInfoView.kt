@@ -52,7 +52,6 @@ class BottomPlaybackBarTrackInfoView(
   }
 
   fun render(vm: BottomPlaybackBarVM) {
-    logger.info("render -> $vm")
     songNameElement.innerHTML = vm.trackTitle
     artistNameElement.innerHTML = vm.trackArtist
   }

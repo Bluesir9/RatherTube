@@ -50,10 +50,7 @@ class Body : Renderable(document.body!!) {
         applyCSS = { style ->
           style.display = "flex"
           style.flex = "0"
-          style.flexDirection = "row"
-          style.justifyContent = "space-between"
-          style.alignItems = "center"
-          style.padding = "10px"
+          style.flexDirection = "column"
           style.boxShadow = "0 0 5px ${Color.BACKGROUND_SHADOW_GRADIENT_LIGHT}, 0 -2px 5px ${Color.BACKGROUND_SHADOW_GRADIENT_DARK}"
           style.position = "relative"
         }

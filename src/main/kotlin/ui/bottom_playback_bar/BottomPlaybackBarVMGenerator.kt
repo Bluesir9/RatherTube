@@ -1,14 +1,21 @@
 package ui.bottom_playback_bar
 
-import youtube.YouTubeVideo
+import com.soywiz.klock.TimeSpan
+import extensions.getAsPlaybackTimestamp
 import playback.player.YouTubeVideoPlayer.Event
 import playback.player.YouTubeVideoPlayer.Event.*
 import playback.player.YouTubeVideoPlayer.Event.WithPlayable.*
+import ui.bottom_playback_bar.BottomPlaybackBarVM.ProgressBarVM
 
 interface BottomPlaybackBarVMGenerator {
   operator fun invoke(playbackEvent: Event): BottomPlaybackBarVM
-}
+  }
 
+/*
+FIXME:
+  This implementation has looks ugly now. Rewrite it and
+  add comments wherever necessary.
+ */
 class BottomPlaybackBarVMGeneratorImpl : BottomPlaybackBarVMGenerator {
 
   override fun invoke(playbackEvent: Event): BottomPlaybackBarVM =
@@ -23,7 +30,8 @@ class BottomPlaybackBarVMGeneratorImpl : BottomPlaybackBarVMGenerator {
         trackTitle = "",
         trackArtist = "",
         playButtonVisible = true,
-        pauseButtonVisible = false
+        pauseButtonVisible = false,
+        progressBarVM = ProgressBarVM.Hidden
       )
     }
 
@@ -32,13 +40,13 @@ class BottomPlaybackBarVMGeneratorImpl : BottomPlaybackBarVMGenerator {
       is Loading,
       is Loaded,
       is Buffering,
-      is Playing -> getVM(
-        video = event.playbackQueueItem.video,
+      is Playing -> getWithPlayableVM(
+        event = event,
         playButtonVisible = false,
         pauseButtonVisible = true
       )
-      is Paused -> getVM(
-        video = event.playbackQueueItem.video,
+      is Paused -> getWithPlayableVM(
+        event = event,
         playButtonVisible = true,
         pauseButtonVisible = false
       )
@@ -50,11 +58,47 @@ class BottomPlaybackBarVMGeneratorImpl : BottomPlaybackBarVMGenerator {
       is LoadFailed -> TODO()
     }
 
-  private fun getVM(video: YouTubeVideo, playButtonVisible: Boolean, pauseButtonVisible: Boolean): BottomPlaybackBarVM =
+  private fun getWithPlayableVM(
+    event: WithPlayable,
+    playButtonVisible: Boolean,
+    pauseButtonVisible: Boolean
+  ): BottomPlaybackBarVM =
     BottomPlaybackBarVM(
-      trackTitle = video.title,
-      trackArtist = video.artist,
+      trackTitle = event.playbackQueueItem.video.title,
+      trackArtist = event.playbackQueueItem.video.artist,
       playButtonVisible = playButtonVisible,
-      pauseButtonVisible = pauseButtonVisible
+      pauseButtonVisible = pauseButtonVisible,
+      progressBarVM = getProgressBarVM(event)
     )
+
+  private fun getProgressBarVM(event: WithPlayable): ProgressBarVM {
+    val playedAndTotalLengthPair =
+      when (event) {
+        is Loading,
+        is Loaded,
+        is LoadFailed -> null
+        is Buffering -> Pair(event.playedLength, event.totalLength)
+        is Playing -> Pair(event.playedLength, event.totalLength)
+        is Paused -> Pair(event.playedLength, event.totalLength)
+      }
+
+    return if(playedAndTotalLengthPair != null) {
+      ProgressBarVM.Visible(
+        progressBarWidthPercent = getProgressBarWidthPercent(playedAndTotalLengthPair.first, playedAndTotalLengthPair.second),
+        progressDotLeftMarginPercent = getProgressDotLeftMarginPercent(playedAndTotalLengthPair.first, playedAndTotalLengthPair.second),
+        progressTimestamp = getProgressTimestamp(playedAndTotalLengthPair.first, playedAndTotalLengthPair.second)
+      )
+    } else {
+      ProgressBarVM.Hidden
+    }
+  }
+
+  private fun getProgressBarWidthPercent(playedLength: TimeSpan, totalLength: TimeSpan): Double =
+    (playedLength.milliseconds / totalLength.milliseconds) * 100
+
+  private fun getProgressDotLeftMarginPercent(playedLength: TimeSpan, totalLength: TimeSpan): Double =
+    getProgressBarWidthPercent(playedLength, totalLength) - 0.1
+
+  private fun getProgressTimestamp(playedLength: TimeSpan, totalLength: TimeSpan): String =
+    "${playedLength.getAsPlaybackTimestamp()} / ${totalLength.getAsPlaybackTimestamp()}"
 }

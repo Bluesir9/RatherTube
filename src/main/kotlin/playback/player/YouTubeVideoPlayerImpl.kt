@@ -5,6 +5,7 @@ package playback.player
 import com.soywiz.klock.seconds
 import config.StringResource
 import extensions.playedLength
+import extensions.totalLength
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BroadcastChannel
@@ -225,7 +226,8 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
       broadcastEvent(
         Event.WithPlayable.Playing(
           playbackQueueItem = mediaFile.playbackQueueItem,
-          playedLength = mediaFile.platformAudio.playedLength
+          playedLength = mediaFile.platformAudio.playedLength,
+          totalLength = mediaFile.platformAudio.totalLength
         )
       )
     }
@@ -234,7 +236,8 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
       broadcastEvent(
         Event.WithPlayable.Paused(
           playbackQueueItem = mediaFile.playbackQueueItem,
-          playedLength = mediaFile.platformAudio.playedLength
+          playedLength = mediaFile.platformAudio.playedLength,
+          totalLength = mediaFile.platformAudio.totalLength
         )
       )
     }

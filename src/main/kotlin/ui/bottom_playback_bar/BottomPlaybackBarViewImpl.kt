@@ -1,5 +1,6 @@
 package ui.bottom_playback_bar
 
+import config.Color
 import extensions.createHtmlElementWithId
 import kotlinx.coroutines.flow.*
 import org.w3c.dom.HTMLElement
@@ -17,30 +18,74 @@ class BottomPlaybackBarViewImpl(
   private lateinit var playbackButtonsView: BottomPlaybackButtonsView
   private lateinit var queueButtonView: BottomQueueButtonView
   private lateinit var floatingPlaybackQueueView: FloatingPlaybackQueueView
+  private lateinit var progressView: BottomPlaybackBarProgressView
 
   private val presenter : BottomPlaybackBarContract.Presenter = BottomPlaybackBarPresenterImpl()
 
   override fun initLayout() {
+    setupActiveTrackProgressBar()
+    setupPlayMenu()
+  }
+
+  private fun setupActiveTrackProgressBar() {
+    /*
+    FIXME:
+      Figure out how I can move this container view
+      inside the `BottomPlaybackBarProgressView` class itself.
+    */
+    val progressBarContainer =
+      document.createHtmlElementWithId(
+        localName = "div",
+        id = "area_bottom_progress_bar_container",
+        applyCSS = { style ->
+          style.position = "relative"
+          style.display = "flex"
+          style.flexDirection = "row"
+          style.alignItems = "center"
+          style.width = "100%"
+          style.height = "5px"
+          style.background = Color.PROGRESS_BAR_BACKGROUND
+        }
+      ).also { rootElement.appendChild(it) }
+
+    progressView = BottomPlaybackBarProgressView(progressBarContainer).also { it.create() }
+  }
+
+  private fun setupPlayMenu() {
+    val playMenuContainer =
+      document.createHtmlElementWithId(
+        localName = "div",
+        id = "area_bottom_play_menu_container",
+        applyCSS = { style ->
+          style.display = "flex"
+          style.flexDirection = "row"
+          style.justifyContent = "space-between"
+          style.alignItems = "center"
+          style.padding = "10px"
+        }
+      ).also { rootElement.appendChild(it) }
+
     val trackInfoContainer =
       document.createHtmlElementWithId(
         localName = "div",
         id = "area_bottom_play_menu_track_information",
         applyCSS = applyTrackInfoContainerCSS
-      ).also { rootElement.appendChild(it) }
+      )
 
     val trackPlaybackButtonsContainer =
       document.createHtmlElementWithId(
         localName = "div",
         id = "area_bottom_play_menu_playback_buttons",
         applyCSS = applyTrackPlaybackButtonsContainerCSS
-      ).also { rootElement.appendChild(it) }
+      )
 
     val trackQueueButtonContainer =
       document.createHtmlElementWithId(
         localName = "div",
         id = "area_bottom_play_menu_track_queue_button_container",
         applyCSS = applyTrackQueueButtonContainerCSS
-      ).also { rootElement.appendChild(it) }
+      )
+    playMenuContainer.append(trackInfoContainer, trackPlaybackButtonsContainer, trackQueueButtonContainer)
 
     trackInfoView = BottomPlaybackBarTrackInfoView(trackInfoContainer).also { it.create() }
     playbackButtonsView = BottomPlaybackButtonsView(trackPlaybackButtonsContainer).also { it.create() }
@@ -108,6 +153,7 @@ class BottomPlaybackBarViewImpl(
   override fun render(vm: BottomPlaybackBarVM) {
     trackInfoView.render(vm)
     playbackButtonsView.render(vm)
+    progressView.render(vm)
   }
 
   override fun onDestroy() {
