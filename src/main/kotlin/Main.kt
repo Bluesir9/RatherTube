@@ -2,7 +2,6 @@ import logging.LoggerImpl
 import ui.body.Body
 import kotlin.browser.window
 
-private val logger = LoggerImpl("Main.kt")
 private lateinit var body: Body
 
 fun main() {
