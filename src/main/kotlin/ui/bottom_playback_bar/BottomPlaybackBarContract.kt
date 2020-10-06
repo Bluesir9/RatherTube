@@ -14,5 +14,6 @@ interface BottomPlaybackBarContract {
     fun playCurrentTrackButtonClick()
     fun pauseCurrentTrackButtonClick()
     fun onQueueButtonClick()
+    fun onProgressBarClicked(clickPositionFromLeft: Int, barWidth: Int)
   }
 }

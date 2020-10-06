@@ -45,10 +45,15 @@ class BottomPlaybackBarViewImpl(
           style.width = "100%"
           style.height = "5px"
           style.background = Color.PROGRESS_BAR_BACKGROUND
+          style.cursor = "pointer"
         }
       ).also { rootElement.appendChild(it) }
 
     progressView = BottomPlaybackBarProgressView(progressBarContainer).also { it.create() }
+
+    progressView.getProgressBarClickEvents()
+      .onEach { presenter.onProgressBarClicked(it.clickPositionFromLeft, it.barWidth) }
+      .launchIn(this)
   }
 
   private fun setupPlayMenu() {

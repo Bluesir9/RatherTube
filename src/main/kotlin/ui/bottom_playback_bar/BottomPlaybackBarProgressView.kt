@@ -1,3 +1,5 @@
+@file:Suppress("EXPERIMENTAL_API_USAGE")
+
 package ui.bottom_playback_bar
 
 import config.Color
@@ -5,6 +7,9 @@ import extensions.StyleDisplay
 import extensions.createHtmlElementWithId
 import extensions.hide
 import extensions.show
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import logging.Logger
 import logging.LoggerImpl
 import org.w3c.dom.HTMLElement
@@ -19,9 +24,15 @@ class BottomPlaybackBarProgressView(
 
   private val logger: Logger = LoggerImpl(BottomPlaybackBarProgressView::class.simpleName!!)
 
+  data class ProgressBarClickEvent(
+    val barWidth: Int,
+    val clickPositionFromLeft: Int
+  )
+
   private lateinit var progressBar: HTMLElement
   private lateinit var progressDot: HTMLElement
   private lateinit var progressTimestamp: HTMLElement
+  private val progressBarClickEvents = BroadcastChannel<ProgressBarClickEvent>(1)
 
   override fun initLayout() {
     progressBar =
@@ -61,6 +72,10 @@ class BottomPlaybackBarProgressView(
 
     rootElement.append(progressBar, progressDot, progressTimestamp)
 
+    rootElement.onclick = { mouseEvent ->
+      progressBarClickEvents.offer(ProgressBarClickEvent(rootElement.offsetWidth, mouseEvent.clientX))
+    }
+
     rootElement.hide()
   }
 
@@ -82,6 +97,8 @@ class BottomPlaybackBarProgressView(
     progressDot.style.marginLeft = "${vm.progressDotLeftMarginPercent}%"
     progressTimestamp.innerText = vm.progressTimestamp
   }
+
+  fun getProgressBarClickEvents(): Flow<ProgressBarClickEvent> = progressBarClickEvents.asFlow()
 
   override fun onLayoutReady() {
     //no-op

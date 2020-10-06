@@ -202,6 +202,19 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
     broadcastEvent(Event.WithoutPlayable.Cleared)
   }
 
+  override fun seekTo(percentage: Double) {
+    val activeMediaFileCopy = activeMediaFile
+    if(activeMediaFileCopy != null) {
+      val totalLength = activeMediaFileCopy.platformAudio.totalLength
+      val seekToLengthInSeconds = (percentage / 100) * totalLength.seconds
+      activeMediaFileCopy.platformAudio.fastSeek(seekToLengthInSeconds)
+      activeMediaFileCopy.platformAudio.play()
+    } else {
+      logger.error("No active media file found so can't seek", NullPointerException("No active media file found so can't seek"))
+      showFloatingMessage("Failed to seek since no active media was found")
+    }
+  }
+
   override fun getEvents(): Flow<Event> = eventChannel.asFlow()
   //endregion
 

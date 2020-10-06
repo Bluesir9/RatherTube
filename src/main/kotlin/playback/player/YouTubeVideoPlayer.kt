@@ -73,5 +73,6 @@ interface YouTubeVideoPlayer {
   fun forward()
   fun clear()
   fun getCurrentlyPlayingItem(): PlaybackQueueItem?
+  fun seekTo(percentage: Double)
   fun getEvents(): Flow<Event>
 }

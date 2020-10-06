@@ -52,6 +52,11 @@ class BottomPlaybackBarPresenterImpl :
     queueButtonClickEventsConsumer.onQueueButtonClicked()
   }
 
+  override fun onProgressBarClicked(clickPositionFromLeft: Int, barWidth: Int) {
+    val positionAsPercentage = (clickPositionFromLeft.toDouble() / barWidth) * 100
+    player.seekTo(positionAsPercentage)
+  }
+
   override fun onStop() {
     //no-op
   }
