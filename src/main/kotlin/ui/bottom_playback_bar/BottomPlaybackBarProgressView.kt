@@ -3,10 +3,7 @@
 package ui.bottom_playback_bar
 
 import config.Color
-import extensions.StyleDisplay
-import extensions.createHtmlElementWithId
-import extensions.hide
-import extensions.show
+import extensions.*
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -22,17 +19,24 @@ class BottomPlaybackBarProgressView(
   override val rootElement: HTMLElement
 ) : Renderable(rootElement) {
 
-  private val logger: Logger = LoggerImpl(BottomPlaybackBarProgressView::class.simpleName!!)
+  companion object {
+    private const val PROGRESS_DOT_WIDTH_IN_PIXELS = 15
+  }
 
   data class ProgressBarClickEvent(
     val barWidth: Int,
     val clickPositionFromLeft: Int
   )
 
+  private val logger: Logger = LoggerImpl(BottomPlaybackBarProgressView::class.simpleName!!)
+
   private lateinit var progressBar: HTMLElement
   private lateinit var progressDot: HTMLElement
   private lateinit var progressTimestamp: HTMLElement
+
   private val progressBarClickEvents = BroadcastChannel<ProgressBarClickEvent>(1)
+
+  private val progressBarContainerWidth get() = rootElement.offsetWidth
 
   override fun initLayout() {
     progressBar =
@@ -52,7 +56,7 @@ class BottomPlaybackBarProgressView(
         applyCSS = { style ->
           style.position = "absolute"
           style.background = Color.PROGRESS_BAR_DOT
-          style.width = "15px"
+          style.width = "${PROGRESS_DOT_WIDTH_IN_PIXELS}px"
           style.height = "15px"
           style.borderRadius = "50%"
         }
@@ -73,7 +77,7 @@ class BottomPlaybackBarProgressView(
     rootElement.append(progressBar, progressDot, progressTimestamp)
 
     rootElement.onclick = { mouseEvent ->
-      progressBarClickEvents.offer(ProgressBarClickEvent(rootElement.offsetWidth, mouseEvent.clientX))
+      progressBarClickEvents.offer(ProgressBarClickEvent(progressBarContainerWidth, mouseEvent.clientX))
     }
 
     rootElement.hide()
@@ -93,9 +97,35 @@ class BottomPlaybackBarProgressView(
 
   private fun renderVisibleProgressBar(vm: Visible) {
     rootElement.show(StyleDisplay.Flex)
-    progressBar.style.width = "${vm.progressBarWidthPercent}%"
-    progressDot.style.marginLeft = "${vm.progressDotLeftMarginPercent}%"
+    renderProgressBarWidth(vm.progressPercentage)
+    renderProgressDot(vm.progressPercentage)
     progressTimestamp.innerText = vm.progressTimestamp
+  }
+
+  private fun renderProgressBarWidth(progressPercentage: Double) {
+    progressBar.style.width = "${progressPercentage}%"
+  }
+
+  /*
+  We want to move a circular dot that is 15 px in diameter from left to right.
+  We will do this by increasing its margin until it reaches the right edge of the screen.
+  The value of this margin will be calculated by using the percentage of progress we want to
+  indicate for the track playing.
+
+  So say we have a screen that is a 1000 pixels wide and we wish to indicate that 50% progress
+  has been made, the value of `marginLeftInPixels` will be calculated as follows:
+
+  (1000 - 0) * 50 / 100 = 500
+
+  Here, the calculated 500 is supposed to mean pixels.
+  */
+  private fun renderProgressDot(progressPercentage: Double) {
+    val progressBarContainerWidthInPixels = progressBarContainerWidth
+    val dotWidthInPixels = PROGRESS_DOT_WIDTH_IN_PIXELS
+    val minMarginLeftInPixels = 0
+    val maxMarginLeftInPixels = progressBarContainerWidthInPixels - dotWidthInPixels
+    val marginLeftInPixels = (maxMarginLeftInPixels - minMarginLeftInPixels) * progressPercentage / 100
+    progressDot.style.marginLeft = "${marginLeftInPixels}px"
   }
 
   fun getProgressBarClickEvents(): Flow<ProgressBarClickEvent> = progressBarClickEvents.asFlow()

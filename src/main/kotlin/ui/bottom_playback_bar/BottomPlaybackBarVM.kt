@@ -10,8 +10,7 @@ data class BottomPlaybackBarVM(
   sealed class ProgressBarVM {
     object Hidden : ProgressBarVM()
     data class Visible(
-      val progressBarWidthPercent: Double,
-      val progressDotLeftMarginPercent: Double,
+      val progressPercentage: Double,
       /*
       String will have the following format ->
       ${minutes_breakup_of_length_played}:${seconds_breakup_of_length_played} / ${minutes_breakup_of_total_length}:${seconds_breakup_of_total_length}

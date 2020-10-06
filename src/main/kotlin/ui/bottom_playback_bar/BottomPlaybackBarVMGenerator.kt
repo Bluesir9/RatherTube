@@ -84,8 +84,7 @@ class BottomPlaybackBarVMGeneratorImpl : BottomPlaybackBarVMGenerator {
 
     return if(playedAndTotalLengthPair != null) {
       ProgressBarVM.Visible(
-        progressBarWidthPercent = getProgressBarWidthPercent(playedAndTotalLengthPair.first, playedAndTotalLengthPair.second),
-        progressDotLeftMarginPercent = getProgressDotLeftMarginPercent(playedAndTotalLengthPair.first, playedAndTotalLengthPair.second),
+        progressPercentage = getProgressPercentage(playedAndTotalLengthPair.first, playedAndTotalLengthPair.second),
         progressTimestamp = getProgressTimestamp(playedAndTotalLengthPair.first, playedAndTotalLengthPair.second)
       )
     } else {
@@ -93,11 +92,8 @@ class BottomPlaybackBarVMGeneratorImpl : BottomPlaybackBarVMGenerator {
     }
   }
 
-  private fun getProgressBarWidthPercent(playedLength: TimeSpan, totalLength: TimeSpan): Double =
+  private fun getProgressPercentage(playedLength: TimeSpan, totalLength: TimeSpan): Double =
     (playedLength.milliseconds / totalLength.milliseconds) * 100
-
-  private fun getProgressDotLeftMarginPercent(playedLength: TimeSpan, totalLength: TimeSpan): Double =
-    getProgressBarWidthPercent(playedLength, totalLength) - 0.1
 
   private fun getProgressTimestamp(playedLength: TimeSpan, totalLength: TimeSpan): String =
     "${playedLength.getAsPlaybackTimestamp()} / ${totalLength.getAsPlaybackTimestamp()}"
