@@ -254,6 +254,8 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
         )
       )
     }
+
+    mediaFile.platformAudio.onended = { forward() }
   }
 
   private fun clearActiveMediaFile() {
