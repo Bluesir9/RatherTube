@@ -19,6 +19,8 @@ import playback.player.YouTubeVideoPlayer.Event
 import playback.queue.PlaybackQueue
 import playback.queue.PlaybackQueueImpl
 import playback.queue.PlaybackQueueItem
+import ui.floating_message.ShowFloatingMessage
+import ui.floating_message.ShowFloatingMessageImpl
 import utils.RepoResult
 import utils.RepoResult.Failure
 import utils.RepoResult.Success
@@ -51,6 +53,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
   private var activeMediaFile: MediaFile? = null
   private val logger: Logger = LoggerImpl(YouTubeVideoPlayerImpl::class.simpleName!!)
   private val playbackQueue: PlaybackQueue = PlaybackQueueImpl
+  private val showFloatingMessage: ShowFloatingMessage = ShowFloatingMessageImpl
 
   init {
     broadcastEvent(Event.WithoutPlayable.Cleared)
@@ -211,7 +214,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
       activeMediaFileCopy.platformAudio.play()
     } else {
       logger.error("No active media file found so can't seek", NullPointerException("No active media file found so can't seek"))
-      showFloatingMessage("Failed to seek since no active media was found")
+      showFloatingMessage(StringResource.FAILED_TO_SEEK_CAUSE_NO_ACTIVE_TRACK_FOUND)
     }
   }
 
@@ -270,10 +273,6 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
   private fun clearMediaFileEventListeners(mediaFile: MediaFile) {
     mediaFile.platformAudio.ontimeupdate = null
     mediaFile.platformAudio.onpause = null
-  }
-
-  private fun showFloatingMessage(message: String) {
-    //TODO: everything
   }
   //endregion
 }

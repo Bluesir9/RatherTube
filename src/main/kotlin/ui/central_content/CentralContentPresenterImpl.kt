@@ -1,5 +1,6 @@
 package ui.central_content
 
+import config.StringResource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -41,7 +42,7 @@ class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresen
       play(video)
     } else {
       logger.error("Failed to find video from last loaded videos. Can't play search result with id = $id")
-      //TODO: Show floating error message
+      showFloatingMessage(StringResource.FAILED_TO_PLAY_TRACK)
     }
   }
 
@@ -49,9 +50,10 @@ class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresen
     val video = findVideoFromLoadedVideos(id)
     if(video != null) {
       addToPlaybackQueue(video)
+      showFloatingMessage(StringResource.TRACK_ADDED_TO_PLAYBACK_QUEUE)
     } else {
       logger.error("Failed to find video from last loaded videos. Can't add to queue, search result with id = $id")
-      //TODO: Show floating error message
+      showFloatingMessage(StringResource.FAILED_TO_ADD_TRACK_TO_PLAYBACK_QUEUE)
     }
   }
 

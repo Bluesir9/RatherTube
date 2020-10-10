@@ -3,6 +3,8 @@ package ui.base
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import ui.floating_message.ShowFloatingMessage
+import ui.floating_message.ShowFloatingMessageImpl
 
 abstract class BasePresenterImpl<View : BaseView> :
   BasePresenter<View>,
@@ -16,6 +18,8 @@ abstract class BasePresenterImpl<View : BaseView> :
 
   abstract fun onStart()
   abstract fun onStop()
+
+  protected val showFloatingMessage: ShowFloatingMessage = ShowFloatingMessageImpl
 
   final override fun start(view: View) {
     /*

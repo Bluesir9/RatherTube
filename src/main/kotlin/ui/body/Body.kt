@@ -29,6 +29,7 @@ class Body : Renderable(document.body!!) {
           style.paddingRight = "10px"
           style.alignItems = "baseline"
           style.boxShadow = "0 0 5px ${Color.BACKGROUND_SHADOW_GRADIENT_LIGHT}, 0 2px 5px ${Color.BACKGROUND_SHADOW_GRADIENT_DARK}"
+          style.position = "relative"
         }
       )
     val centralContainer =

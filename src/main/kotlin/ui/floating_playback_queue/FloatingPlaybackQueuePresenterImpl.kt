@@ -2,6 +2,7 @@
 
 package ui.floating_playback_queue
 
+import config.StringResource
 import kotlinx.coroutines.flow.*
 import logging.Logger
 import logging.LoggerImpl
@@ -61,7 +62,7 @@ class FloatingPlaybackQueuePresenterImpl :
     } else {
       logger.error("Failed to find playback queue item clicked in playback queue, so cant play it. " +
         "Item VM = $itemVM, playbackQueueItems = $playbackQueueItems")
-      //TODO: Show floating error message
+      showFloatingMessage(StringResource.FAILED_TO_PLAY_TRACK)
     }
   }
 
@@ -72,7 +73,7 @@ class FloatingPlaybackQueuePresenterImpl :
     } else {
       logger.error("Failed to find playback queue item clicked in playback queue, so cant remove it. " +
         "Item VM = $itemVM, playbackQueueItems = $playbackQueueItems")
-      //TODO: Show floating error message
+      showFloatingMessage(StringResource.FAILED_TO_REMOVE_TRACK_FROM_QUEUE)
     }
   }
 
