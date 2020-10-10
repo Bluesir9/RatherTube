@@ -179,7 +179,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
         indexOfActivePlaybackItem + 1
       } else {
         logger.error(
-          "Attempting to go to next track when no existing track was found. Will begin playing +" +
+          "Attempting to go to next track when no existing track was found. Will begin playing " +
           "first track of the playback queue."
         )
         /*
