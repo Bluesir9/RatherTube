@@ -52,10 +52,15 @@ class BottomPlaybackBarVMGeneratorImpl : BottomPlaybackBarVMGenerator {
       )
       /*
       FIXME:
-        Load has failed so I should have a dedicated
-        UI representation for the same.
+        Let's have a dedicated UI representation
+        for this instead of using the paused state
+        UI representation.
       */
-      is LoadFailed -> TODO()
+      is LoadFailed -> getWithPlayableVM(
+        event = event,
+        playButtonVisible = true,
+        pauseButtonVisible = false
+      )
     }
 
   private fun getWithPlayableVM(
