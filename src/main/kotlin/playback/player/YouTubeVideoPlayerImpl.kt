@@ -95,7 +95,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
     if (activeMediaFileCopy != null) {
       activeMediaFileCopy.pause()
     } else {
-      logger.error("Attempting to pause player when activeMediaFile is null")
+      logger.error(NullPointerException("Attempting to pause player when activeMediaFile is null"))
       showFloatingMessage(StringResource.PAUSE_FAILED_CAUSE_NO_TRACK_FOUND)
     }
   }
@@ -105,7 +105,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
     if (activeMediaFileCopy != null) {
       activeMediaFileCopy.play()
     } else {
-      logger.error("Attempting to resume player when activeMediaFile is null")
+      logger.error(NullPointerException("Attempting to resume player when activeMediaFile is null"))
       showFloatingMessage(StringResource.RESUME_FAILED_CAUSE_NO_TRACK_FOUND)
     }
   }
@@ -144,17 +144,17 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
           queue, so lets log an error for the same.
           */
           if (indexOfActivePlaybackItem == -1) {
-            logger.error(
+            logger.error(Exception(
               "Failed to find active playback item in the playback queue while rewinding. \n" +
                 "activeMediaFileCopy = $activeMediaFileCopy \n" +
                 "playbackQueueItems = $playbackQueueItems"
-            )
+            ))
             showFloatingMessage(StringResource.REWIND_FAILED_CAUSE_ACTIVE_TRACK_NOT_FOUND_IN_QUEUE)
           }
         }
       }
     } else {
-      logger.error("Attempting to rewind player when activeMediaFile is null")
+      logger.error(NullPointerException("Attempting to rewind player when activeMediaFile is null"))
       showFloatingMessage(StringResource.REWIND_FAILED_CAUSE_NO_ACTIVE_TRACK_FOUND)
     }
   }
@@ -162,10 +162,10 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
   override fun forward() {
     val activeMediaFileCopy = activeMediaFile
     if(activeMediaFileCopy == null) {
-      logger.error(
-        "Attempting to go to next track when no existing track was found. Will begin playing " +
-          "first track of the playback queue."
-      )
+      logger.error(NullPointerException(
+          "Attempting to go to next track when no existing track was found. Will begin playing " +
+            "first track of the playback queue."
+        ))
       showFloatingMessage(StringResource.FORWARD_FAILED_CAUSE_NO_ACTIVE_TRACK_FOUND)
       return
     }
@@ -176,11 +176,11 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
     queue, so lets log an error for the same and show an error message.
     */
     if (indexOfActivePlaybackItem == -1) {
-      logger.error(
+      logger.error(Exception(
         "Failed to find active playback item in the playback queue while forwarding. \n" +
           "activeMediaFileCopy = $activeMediaFileCopy \n" +
           "playbackQueueItems = $playbackQueueItems"
-      )
+      ))
       showFloatingMessage(StringResource.FORWARD_FAILED_CAUSE_ACTIVE_TRACK_NOT_FOUND_IN_QUEUE)
       return
     }
@@ -210,7 +210,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
       activeMediaFileCopy.platformAudio.fastSeek(seekToLengthInSeconds)
       activeMediaFileCopy.platformAudio.play()
     } else {
-      logger.error("No active media file found so can't seek", NullPointerException("No active media file found so can't seek"))
+      logger.error(NullPointerException("No active media file found so can't seek"))
       showFloatingMessage(StringResource.FAILED_TO_SEEK_CAUSE_NO_ACTIVE_TRACK_FOUND)
     }
   }

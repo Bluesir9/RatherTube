@@ -60,8 +60,10 @@ class FloatingPlaybackQueuePresenterImpl :
     if(playbackQueueItem != null) {
       play(playbackQueueItem)
     } else {
-      logger.error("Failed to find playback queue item clicked in playback queue, so cant play it. " +
-        "Item VM = $itemVM, playbackQueueItems = $playbackQueueItems")
+      logger.error(NullPointerException(
+        "Failed to find playback queue item clicked in playback queue, so cant play it. " +
+        "Item VM = $itemVM, playbackQueueItems = $playbackQueueItems"
+      ))
       showFloatingMessage(StringResource.FAILED_TO_PLAY_TRACK)
     }
   }
@@ -71,8 +73,10 @@ class FloatingPlaybackQueuePresenterImpl :
     if(playbackQueueItem != null) {
       removeFromPlaybackQueue(playbackQueueItem)
     } else {
-      logger.error("Failed to find playback queue item clicked in playback queue, so cant remove it. " +
-        "Item VM = $itemVM, playbackQueueItems = $playbackQueueItems")
+      logger.error(NullPointerException(
+        "Failed to find playback queue item clicked in playback queue, so cant remove it. " +
+        "Item VM = $itemVM, playbackQueueItems = $playbackQueueItems"
+      ))
       showFloatingMessage(StringResource.FAILED_TO_REMOVE_TRACK_FROM_QUEUE)
     }
   }

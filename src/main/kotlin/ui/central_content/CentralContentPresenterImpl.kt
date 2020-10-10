@@ -41,7 +41,7 @@ class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresen
     if (video != null) {
       play(video)
     } else {
-      logger.error("Failed to find video from last loaded videos. Can't play search result with id = $id")
+      logger.error(NullPointerException("Failed to find video from last loaded videos. Can't play search result with id = $id"))
       showFloatingMessage(StringResource.FAILED_TO_PLAY_TRACK)
     }
   }
@@ -52,7 +52,7 @@ class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresen
       addToPlaybackQueue(video)
       showFloatingMessage(StringResource.TRACK_ADDED_TO_PLAYBACK_QUEUE)
     } else {
-      logger.error("Failed to find video from last loaded videos. Can't add to queue, search result with id = $id")
+      logger.error(NullPointerException("Failed to find video from last loaded videos. Can't add to queue, search result with id = $id"))
       showFloatingMessage(StringResource.FAILED_TO_ADD_TRACK_TO_PLAYBACK_QUEUE)
     }
   }
@@ -60,18 +60,18 @@ class CentralContentPresenterImpl : CentralContentContract.Presenter, BasePresen
   private fun findVideoFromLoadedVideos(id: String): YouTubeVideo? {
     when(val searchEvent = lastSearchEvent) {
       is Loading -> {
-        logger.error("Unexpected encounter of search result click event. lastVM = $lastVM")
+        logger.error(IllegalStateException("Unexpected encounter of search result click event. lastVM = $lastVM"))
         return null
       }
       is Loaded -> {
         val clickedVideo = searchEvent.videos.firstOrNull { video -> video.id == id }
         if(clickedVideo == null) {
-          logger.error("Unable to find clicked song. lastVM = $lastVM, searchEvent = $searchEvent")
+          logger.error(NullPointerException("Unable to find clicked song. lastVM = $lastVM, searchEvent = $searchEvent"))
         }
         return clickedVideo
       }
       else -> {
-        logger.error("Unexpected search event = $lastSearchEvent. Can't find video with id = $id")
+        logger.error(IllegalStateException("Unexpected search event = $lastSearchEvent. Can't find video with id = $id"))
         return null
       }
     }
