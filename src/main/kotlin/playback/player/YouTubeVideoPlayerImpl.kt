@@ -149,6 +149,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
                 "activeMediaFileCopy = $activeMediaFileCopy \n" +
                 "playbackQueueItems = $playbackQueueItems"
             )
+            showFloatingMessage(StringResource.REWIND_FAILED_CAUSE_ACTIVE_TRACK_NOT_FOUND_IN_QUEUE)
           }
         }
       }
@@ -160,35 +161,31 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
 
   override fun forward() {
     val activeMediaFileCopy = activeMediaFile
-    val playbackQueueItems = playbackQueue.get()
-    val indexOfNewPlaybackItem =
-      if (activeMediaFileCopy != null) {
-        val indexOfActivePlaybackItem = playbackQueueItems.indexOf(activeMediaFileCopy.playbackQueueItem)
-        /*
-        We failed to find the activeMediaFileCopy.playbackQueueItem in the playback
-        queue, so lets log an error for the same.
-        */
-        if (indexOfActivePlaybackItem == -1) {
-          logger.error(
-            "Failed to find active playback item in the playback queue while forwarding. \n" +
-              "activeMediaFileCopy = $activeMediaFileCopy \n" +
-              "playbackQueueItems = $playbackQueueItems"
-          )
-        }
-
-        indexOfActivePlaybackItem + 1
-      } else {
-        logger.error(
-          "Attempting to go to next track when no existing track was found. Will begin playing " +
+    if(activeMediaFileCopy == null) {
+      logger.error(
+        "Attempting to go to next track when no existing track was found. Will begin playing " +
           "first track of the playback queue."
-        )
-        /*
-        We don't want the user to be stuck here in this state. So
-        we will go fetch the first item in the playback queue and
-        play it.
-         */
-        0
-      }
+      )
+      showFloatingMessage(StringResource.FORWARD_FAILED_CAUSE_NO_ACTIVE_TRACK_FOUND)
+      return
+    }
+    val playbackQueueItems = playbackQueue.get()
+    val indexOfActivePlaybackItem = playbackQueueItems.indexOf(activeMediaFileCopy.playbackQueueItem)
+    /*
+    We failed to find the activeMediaFileCopy.playbackQueueItem in the playback
+    queue, so lets log an error for the same and show an error message.
+    */
+    if (indexOfActivePlaybackItem == -1) {
+      logger.error(
+        "Failed to find active playback item in the playback queue while forwarding. \n" +
+          "activeMediaFileCopy = $activeMediaFileCopy \n" +
+          "playbackQueueItems = $playbackQueueItems"
+      )
+      showFloatingMessage(StringResource.FORWARD_FAILED_CAUSE_ACTIVE_TRACK_NOT_FOUND_IN_QUEUE)
+      return
+    }
+
+    val indexOfNewPlaybackItem = indexOfActivePlaybackItem + 1
 
     if(indexOfNewPlaybackItem < playbackQueueItems.size) {
       val newPlaybackItem = playbackQueueItems[indexOfNewPlaybackItem]
