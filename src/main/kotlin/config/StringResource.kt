@@ -11,4 +11,9 @@ object StringResource {
   const val RESUME_FAILED_CAUSE_NO_TRACK_FOUND = "Cannot resume track cause no track was found"
   const val REWIND_FAILED_CAUSE_NO_ACTIVE_TRACK_FOUND = "Cannot rewind track cause no active track was found"
   const val FORWARD_FAILED_CAUSE_NO_TRACKS_AFTER_CURRENT = "No tracks available after current track"
+  const val TRACK_ADDED_TO_PLAYBACK_QUEUE = "Track added to playback queue"
+  const val FAILED_TO_ADD_TRACK_TO_PLAYBACK_QUEUE = "Failed to add track to playback queue"
+  const val FAILED_TO_PLAY_TRACK = "Failed to play track"
+  const val FAILED_TO_REMOVE_TRACK_FROM_QUEUE = "Failed to remove track from playback queue"
+  const val FAILED_TO_SEEK_CAUSE_NO_ACTIVE_TRACK_FOUND = "Failed to seek cause no active track was found"
 }
