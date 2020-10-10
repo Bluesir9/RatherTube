@@ -117,7 +117,7 @@ class FloatingPlaybackQueueView(
       #area_bottom_play_menu_floating_playback_queue_header_clear_label {
         font-size: 1rem;
         background: mediumseagreen;
-        color: #202020;
+        color: ${Color.FLOATING_QUEUE_MENU_CLEAR_BUTTON_TEXT};
         padding: 10px;
         border-radius: 4px;
         cursor: pointer;
@@ -155,11 +155,11 @@ class FloatingPlaybackQueueView(
       }
       
       .area_bottom_play_menu_floating_playback_queue_list_item_inactive:hover {
-        background: ${Color.BACKGROUND_PLAYBACK_QUEUE_ITEM_NOT_ACTIVELY_PLAYING}
+        background: ${Color.BACKGROUND_PLAYBACK_QUEUE_ITEM_NOT_ACTIVELY_PLAYING};
       }
       
       .area_bottom_play_menu_floating_playback_queue_list_item_active {
-        background: ${Color.BACKGROUND_PLAYBACK_QUEUE_ITEM_ACTIVELY_PLAYING}
+        background: ${Color.BACKGROUND_PLAYBACK_QUEUE_ITEM_ACTIVELY_PLAYING};
       }
       
       .area_bottom_play_menu_floating_playback_queue_list_item_content_container {
