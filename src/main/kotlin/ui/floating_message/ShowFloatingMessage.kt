@@ -32,6 +32,7 @@ object ShowFloatingMessageImpl : ShowFloatingMessage, CoroutineScope by Coroutin
           style.borderRadius = "4px"
           style.padding = "10px"
           style.zIndex = "3"
+          style.boxShadow = "0 0 5px ${Color.BACKGROUND_SHADOW_GRADIENT_LIGHT}, -5px -5px 5px ${Color.BACKGROUND_SHADOW_GRADIENT_DARK}"
         }
       )
     val root = document.getHTMLElementById("area_top_bar")
