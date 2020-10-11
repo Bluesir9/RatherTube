@@ -1,13 +1,13 @@
 {
   "name": "rathertube_server",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node -r dotenv/config index.js dotenv_config_path=.env",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Vishan Seru(bluesir9)",
   "license": "ISC",
   "dependencies": {
     "cors": "2.8.5",
