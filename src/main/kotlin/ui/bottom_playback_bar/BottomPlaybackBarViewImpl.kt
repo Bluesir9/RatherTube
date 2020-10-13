@@ -147,7 +147,7 @@ class BottomPlaybackBarViewImpl(
     style.display = "flex"
     style.flex = "1"
     style.flexDirection = "row"
-    style.justifyContent = "end"
+    style.justifyContent = "flex-end"
     style.padding = "10px"
   }
 
