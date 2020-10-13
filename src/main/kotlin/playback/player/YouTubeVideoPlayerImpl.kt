@@ -5,6 +5,7 @@ package playback.player
 import com.soywiz.klock.seconds
 import config.StringResource
 import extensions.playedLength
+import extensions.seekTo
 import extensions.totalLength
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +44,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
     }
 
     fun rewind() {
-      this.platformAudio.fastSeek(0.0)
+      this.platformAudio.seekTo(0.0)
       this.platformAudio.play()
     }
   }
@@ -207,7 +208,7 @@ object YouTubeVideoPlayerImpl: YouTubeVideoPlayer, CoroutineScope by CoroutineSc
     if(activeMediaFileCopy != null) {
       val totalLength = activeMediaFileCopy.platformAudio.totalLength
       val seekToLengthInSeconds = (percentage / 100) * totalLength.seconds
-      activeMediaFileCopy.platformAudio.fastSeek(seekToLengthInSeconds)
+      activeMediaFileCopy.platformAudio.seekTo(seekToLengthInSeconds)
       activeMediaFileCopy.platformAudio.play()
     } else {
       logger.error(NullPointerException("No active media file found so can't seek"))
