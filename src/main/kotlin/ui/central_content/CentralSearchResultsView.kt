@@ -92,7 +92,8 @@ class CentralSearchResultsView(
     .area_content_content_grid_item_image {
       display: flex;
       flex: 1;
-      width: auto;
+      width: -webkit-fill-available;
+      width: -moz-available;
       height: auto;
       object-fit: cover;
       background-color: ${Color.BACKGROUND_CONTENT_GRID_IMAGE};
