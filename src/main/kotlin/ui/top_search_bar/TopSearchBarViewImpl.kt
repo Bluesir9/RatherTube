@@ -42,6 +42,8 @@ class TopSearchBarViewImpl(
           style.borderWidth = "1px"
           style.fontSize = "1.2rem"
           style.padding = "8px"
+          style.outline = "none"
+          style.setProperty("-webkit-appearance", "none")
         }
       )
 
