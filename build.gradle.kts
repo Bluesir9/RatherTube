@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "com.bluesir9"
-version = "1.0.0"
+version = "0.1.0"
 
 repositories {
   maven("https://kotlin.bintray.com/kotlin-js-wrappers/")
