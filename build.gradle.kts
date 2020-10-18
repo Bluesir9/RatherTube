@@ -63,4 +63,17 @@ dependencies {
   implementation("com.soywiz.korlibs.klock:klock-js:$klockVersion")
 }
 
-kotlin.target.browser { }
+kotlin.target.browser {
+  /*
+  The app stopped working when I tried building for production due to JS minification.
+  Upon researching I found below solution at this link ->
+
+  https://discuss.kotlinlang.org/t/kotlin-js-project-doesnt-build-properly-for-production/17022/2
+
+  The problem and solution are described in detail upon following the trail of links
+  in the post. Not very clear as to why this happens but it does solve the problem.
+  */
+  dceTask {
+    keep("ktor-ktor-io.\$\$importsForInline\$\$.ktor-ktor-io.io.ktor.utils.io")
+  }
+}
