@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node -r dotenv/config index.js dotenv_config_path=.env",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run clean && mkdir dist && cp index.js dist/ && cp package-lock.json dist/",
+    "start": "npm run build && node -r dotenv/config dist/index.js dotenv_config_path=.env",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -r -f dist"
   },
   "author": "Vishan Seru(bluesir9)",
   "license": "ISC",
