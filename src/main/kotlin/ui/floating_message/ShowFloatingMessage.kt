@@ -58,7 +58,7 @@ object ShowFloatingMessageImpl : ShowFloatingMessage, CoroutineScope by Coroutin
     val element = document.createIcon(
       clazz = "fa fa-times",
       id = "area_content_floating_message_cross",
-      applyCSS = { style ->
+      applyIconCss = { style ->
         style.fontSize = "20px"
       }
     )

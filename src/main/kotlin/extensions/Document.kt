@@ -30,13 +30,21 @@ fun Document.createHtmlElementWithClass(
 fun Document.createIcon(
   clazz: String,
   id: String,
-  applyCSS: (style: CSSStyleDeclaration) -> Unit
+  applyIconCss: (style: CSSStyleDeclaration) -> Unit,
+  applyContainerCss: ((style: CSSStyleDeclaration) -> Unit)? = null
 ): HTMLElement {
-  val htmlElement = createElement("i") as HTMLElement
-  htmlElement.className = clazz
-  htmlElement.id = id
-  applyCSS(htmlElement.style)
-  return htmlElement
+  val icon = createElement("svg") as HTMLElement
+  icon.className = clazz
+  icon.id = id
+  applyIconCss(icon.style)
+
+  val container = createHtmlElementWithId(
+    localName = "div",
+    id = "${id}_container",
+    applyCSS = applyContainerCss
+  )
+  container.appendChild(icon)
+  return container
 }
 
 fun Document.createHtmlInputElement(

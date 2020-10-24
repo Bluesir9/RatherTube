@@ -256,14 +256,14 @@ class FloatingPlaybackQueueView(
     queueItemContainer.innerHTML = """
       <div class="area_bottom_play_menu_floating_playback_queue_list_item_content_container">
         <div class="area_bottom_play_menu_floating_playback_queue_list_item_play_image_container">
-          <i class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></i>
+          <svg class="far fa-play-circle icon_area_bottom_play_menu_floating_playback_queue_list_item_hover_play"></svg>
         </div>
         <div class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_container">
           <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_title">${item.trackTitle}</p>
           <p class="area_bottom_play_menu_floating_playback_queue_list_item_text_info_track_artist">${item.trackArtist}</p>
         </div>
         <div class="area_bottom_play_menu_floating_playback_queue_list_item_remove_container">
-          <i class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_remove"></i>
+          <svg class="fa fa-minus-circle icon_bottom_play_menu_floating_playback_queue_list_item_remove"></svg>
         </div>
       </div>
       <div class="area_bottom_play_menu_floating_playback_queue_list_item_footer_divider"></div>

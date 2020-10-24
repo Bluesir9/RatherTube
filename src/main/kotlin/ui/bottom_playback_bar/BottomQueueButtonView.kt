@@ -22,7 +22,7 @@ class BottomQueueButtonView(
     document.createIcon(
       clazz = "fas fa-list",
       id = "icon_bottom_play_menu_track_queue_button",
-      applyCSS = { style ->
+      applyIconCss = { style ->
         style.fontSize = "25px"
         style.color = Color.PRIMARY_GREEN
       }

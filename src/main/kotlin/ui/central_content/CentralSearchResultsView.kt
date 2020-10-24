@@ -53,7 +53,7 @@ class CentralSearchResultsView(
         <div class="area_content_content_grid_item_image_container">
           <img class="area_content_content_grid_item_image" src="${vm.trackImageUrl}"/>
           <div class="area_content_content_grid_item_hover_play_container">
-            <i class="far fa-play-circle icon_area_content_content_grid_item_hover_play"></i>
+            <svg class="far fa-play-circle icon_area_content_content_grid_item_hover_play"></svg>
           </div>
         </div>
         <div class="area_content_content_grid_item_track_info_container">
@@ -61,7 +61,9 @@ class CentralSearchResultsView(
             <p class="area_content_content_grid_item_track_title">${vm.trackTitle}</p>
             <p class="area_content_content_grid_item_artist_name">${vm.trackArtist}</p>
           </div>
-          <i class="fa fa-plus-circle icon_content_content_grid_item_add_to_queue"></i>
+          <div class="icon_content_content_grid_item_add_to_queue_container">
+            <svg class="fa fa-plus-circle icon_content_content_grid_item_add_to_queue"></svg>
+          </div>
         </div>
     """.trimIndent()
 
@@ -69,7 +71,7 @@ class CentralSearchResultsView(
       gridItemClickEvents.offer(ClickEvent.PlaySearchResult(vm.id))
     }
 
-    container.getFirstHTMLElementByClassName("icon_content_content_grid_item_add_to_queue").onclick = {
+    container.getFirstHTMLElementByClassName("icon_content_content_grid_item_add_to_queue_container").onclick = {
       gridItemClickEvents.offer(ClickEvent.AddSearchResultToQueue(vm.id))
     }
 

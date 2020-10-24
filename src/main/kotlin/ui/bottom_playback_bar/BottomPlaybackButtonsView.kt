@@ -2,11 +2,9 @@ package ui.bottom_playback_bar
 
 import config.Color
 import extensions.clickEventsAsFlow
-import extensions.createHtmlElementWithId
 import extensions.createIcon
 import kotlinx.coroutines.flow.Flow
 import org.w3c.dom.HTMLElement
-import org.w3c.dom.css.CSSStyleDeclaration
 import ui.base.Renderable
 import kotlin.browser.document
 
@@ -37,81 +35,56 @@ class BottomPlaybackButtonsView(
   }
 
   private fun makePreviousButton(): HTMLElement =
-    makeIconButton(
-      iconClass = "fas fa-step-backward",
-      iconId = "icon_bottom_play_menu_previous_track_button",
-      iconCSS = { style ->
+    document.createIcon(
+      clazz = "fas fa-step-backward",
+      id = "icon_bottom_play_menu_previous_track_button",
+      applyIconCss = { style ->
         style.fontSize = "20px"
         style.color = Color.PRIMARY_GREEN
       },
-      containerId = "area_bottom_play_menu_previous_track_button",
-      containerCSS = { style ->
+      applyContainerCss = { style ->
         style.padding = "10px"
       }
     )
 
   private fun makePauseButton(): HTMLElement =
-    makeIconButton(
-      iconClass = "far fa-pause-circle",
-      iconId = "icon_bottom_play_menu_pause_track_button",
-      iconCSS = { style ->
+    document.createIcon(
+      clazz = "far fa-pause-circle",
+      id = "icon_bottom_play_menu_pause_track_button",
+      applyIconCss = { style ->
         style.fontSize = "40px"
         style.color = Color.PRIMARY_GREEN
       },
-      containerId = "area_bottom_play_menu_pause_track_button",
-      containerCSS = { style ->
+      applyContainerCss = { style ->
         style.padding = "10px"
       }
     )
 
   private fun makePlayButton(): HTMLElement =
-    makeIconButton(
-      iconClass = "far fa-play-circle",
-      iconId = "icon_bottom_play_menu_play_track_button",
-      iconCSS = { style ->
+    document.createIcon(
+      clazz = "far fa-play-circle",
+      id = "icon_bottom_play_menu_play_track_button",
+      applyIconCss = { style ->
         style.fontSize = "40px"
         style.color = Color.PRIMARY_GREEN
       },
-      containerId = "area_bottom_play_menu_play_track_button",
-      containerCSS = { style ->
+      applyContainerCss = { style ->
         style.padding = "10px"
       }
     )
 
   private fun makeNextButton(): HTMLElement =
-    makeIconButton(
-      iconClass = "fas fa-step-forward",
-      iconId = "icon_bottom_play_menu_next_track_button",
-      iconCSS = { style ->
+    document.createIcon(
+      clazz = "fas fa-step-forward",
+      id = "icon_bottom_play_menu_next_track_button",
+      applyIconCss = { style ->
         style.fontSize = "20px"
         style.color = Color.PRIMARY_GREEN
       },
-      containerId = "area_bottom_play_menu_next_track_button",
-      containerCSS = { style ->
+      applyContainerCss = { style ->
         style.padding = "10px"
       }
     )
-
-  private fun makeIconButton(
-    iconClass: String,
-    iconId: String,
-    iconCSS: (style: CSSStyleDeclaration) -> Unit,
-    containerId: String,
-    containerCSS: (style: CSSStyleDeclaration) -> Unit
-  ): HTMLElement {
-    val icon = document.createIcon(
-      clazz = iconClass,
-      id = iconId,
-      applyCSS = iconCSS
-    )
-    val iconContainer = document.createHtmlElementWithId(
-      localName = "div",
-      id = containerId,
-      applyCSS = containerCSS
-    )
-
-    return iconContainer.apply { appendChild(icon) }
-  }
 
   override fun onLayoutReady() {
     //no-op
