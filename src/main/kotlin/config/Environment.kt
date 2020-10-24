@@ -15,5 +15,4 @@ interface Environment {
   will define it themselves.
   */
   val host: String
-  val fontAwesomeScriptUrl: String
 }

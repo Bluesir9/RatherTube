@@ -25,7 +25,6 @@ object EnvironmentActual : Environment {
   override val debug: Boolean = true
   override val apiProtocol: URLProtocol = URLProtocol.HTTP
   override val host: String = "localhost:3000"
-  override val fontAwesomeScriptUrl: String = "https://kit.fontawesome.com/XXX.js"
 }
 ```
 4. Try to build the project by running the `./gradlew assemble` command at the root directory. If it gives you a permission error, try running `chmod 700 gradlew` before running `./gradlew assemble` again.
