@@ -2,6 +2,8 @@ package config
 
 import io.ktor.http.URLProtocol
 
+val ENVIRONMENT = EnvironmentActual
+
 interface Environment {
   val debug: Boolean
   val apiProtocol: URLProtocol

@@ -19,8 +19,6 @@ package config
 
 import io.ktor.http.*
 
-val ENVIRONMENT = EnvironmentActual
-
 object EnvironmentActual : Environment {
   override val debug: Boolean = true
   override val apiProtocol: URLProtocol = URLProtocol.HTTP
