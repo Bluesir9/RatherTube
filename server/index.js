@@ -1,16 +1,22 @@
 "use strict";
 
+require("dotenv");
 const youtubeScraper = require("scrape-youtube").default;
 const ytdl = require("youtube-dl");
 const express = require("express");
 const cors = require("cors");
 const moment = require("moment");
 
+const config = {
+  clientOrigin: process.env.CLIENT_ORIGIN,
+  expressPort: process.env.PORT || process.env.EXPRESS_PORT
+}
+
 const app = express();
 app.use(cors({
-  origin: process.env.client_origin
+  origin: config.clientOrigin
 }));
-const PORT = 3000;
+const PORT = config.expressPort;
 
 //region GET search API
 app.get("/api/youtube/search", async (request, response, next) => {
@@ -122,5 +128,5 @@ app.use((error, request, response, next) => {
 //endregion
 
 app.listen(PORT, () => {
-  console.log("RatherTube server running at http://localhost:" + PORT);
+  console.log("RatherTube server running");
 });
