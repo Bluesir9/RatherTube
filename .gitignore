@@ -74,4 +74,5 @@ fabric.properties
 /.gradle
 
 # Actual project files
-/src/main/kotlin/config/EnvironmentActual.kt
+/src/main/kotlin/config/LocalEnvironment.kt
+/src/main/kotlin/config/ProductionEnvironment.kt
