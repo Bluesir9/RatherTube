@@ -76,3 +76,4 @@ fabric.properties
 # Actual project files
 /src/main/kotlin/config/LocalEnvironment.kt
 /src/main/kotlin/config/ProductionEnvironment.kt
+deploy.sh
