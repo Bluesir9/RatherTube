@@ -2,6 +2,10 @@ package config
 
 import io.ktor.http.URLProtocol
 
+val ENVIRONMENT =
+  if(js("process.env.NODE_ENV").unsafeCast<String>() == "production") ProductionEnvironment
+  else LocalEnvironment
+
 interface Environment {
   val debug: Boolean
   val apiProtocol: URLProtocol
