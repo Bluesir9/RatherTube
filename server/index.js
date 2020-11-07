@@ -54,7 +54,8 @@ async function getSearchResults(query) {
 }
 
 async function searchYouTube(query) {
-  return youtubeScraper.search(query);
+  return youtubeScraper.search(query)
+      .then(results => results.videos);
 }
 
 //endregion
