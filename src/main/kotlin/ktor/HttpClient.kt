@@ -28,9 +28,11 @@ val httpClient = HttpClient(engine = Js.create()) {
     serializer = KotlinxSerializer()
   }
 
-  install(Logging) {
-    logger = Logger.DEFAULT
-    level = LogLevel.HEADERS
+  if(ENVIRONMENT.debug) {
+    install(Logging) {
+      logger = Logger.DEFAULT
+      level = LogLevel.ALL
+    }
   }
 
   /*
