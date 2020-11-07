@@ -8,7 +8,7 @@ The original reasons have been invalidated now, so I intend to use this project 
 while also pushing the KMP envelope by building native apps for Android, iOS, MacOS etc. 
 
 ## Where can I use this?
-I haven't gotten around to hosting this app anywhere yet. 
+[Here.](http://rathertube.bluesir9.com) 
 
 ## How do I run this?
 1. Start by cloning the project locally. 
